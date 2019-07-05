@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
@@ -33,7 +34,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _counter = 0;
-  var tabTitles = ["推荐","分类","最新","专辑"];
+  var tabTitles = ["推荐", "分类", "最新", "专辑"];
 
   void _incrementCounter() {
     setState(() {
@@ -45,49 +46,130 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top, SystemUiOverlay.bottom]);
+    SystemChrome.setEnabledSystemUIOverlays(
+        [SystemUiOverlay.top, SystemUiOverlay.bottom]);
   }
+
+  //定义一个globalKey, 由于GlobalKey要保持全局唯一性，我们使用静态变量存储
+  static GlobalKey<ScaffoldState> _globalKey = new GlobalKey();
 
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
       length: tabTitles.length,
       child: Scaffold(
+        key: _globalKey,
         appBar: AppBar(
           title: Text(widget.title),
           leading: new IconButton(
-              icon: Image.asset('assets/ic_appbar_menu.png',width: 20,height: 20,),
-              onPressed:()=>SnackBar(content: Text('hello'),duration: Duration(seconds: 2))),
+              icon: Image.asset(
+                'assets/ic_appbar_menu.png',
+                width: 20,
+                height: 20,
+              ),
+              onPressed: () {
+                print('打开抽屉');
+                //Scaffold.of(context).openDrawer();
+                _globalKey.currentState.openDrawer();
+              }),
           actions: <Widget>[
             IconButton(
-                icon: Image.asset('assets/ic_appbar_search.png',width: 20,height: 20,),
-                onPressed: null),
+                icon: Image.asset(
+                  'assets/ic_appbar_search.png',
+                  width: 20,
+                  height: 20
+                ),
+                onPressed: () => _globalKey.currentState
+                    .showSnackBar(SnackBar(content: Text('搜索')))),
             IconButton(
-                icon: Image.asset('assets/ic_appbar_more.png',width: 20,height: 20,),
-                onPressed: null),
+                icon: Image.asset(
+                  'assets/ic_appbar_more.png',
+                  width: 20,
+                  height: 20,
+                ),
+                onPressed: () {}),
           ],
           bottom: TabBar(
-            tabs: tabTitles.map((String title)=> new Tab(text: title)).toList(),
+            tabs:
+                tabTitles.map((String title) => new Tab(text: title)).toList(),
             isScrollable: false,
             labelPadding: EdgeInsets.all(1),
             indicatorSize: TabBarIndicatorSize.label,
             indicatorColor: Colors.white,
           ),
         ),
+        drawer: new MenuDrawer(),
         body: TabBarView(
+          children: tabTitles.map((e) {
+            return Container(
+              alignment: Alignment.center,
+              child: Text(
+                e,
+                textScaleFactor: 5,
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+}
+
+class MenuDrawer extends StatelessWidget {
+  const MenuDrawer({Key key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: MediaQuery.removePadding(
+        context: context,
+        removeTop: true,
+        child: Column(
           children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+            Stack(
               children: <Widget>[
-                Text(
-                  'You have pushed the button this many times:',
+                Image.network(
+                  "http://s.cn.bing.net/th?id=OHR.PeelCastle_ZH-CN6366204379_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp",
+                  height: 200.0,
+                  fit: BoxFit.fill,
                 ),
-                Text(
-                  '$_counter',
-                  style: Theme.of(context).textTheme.display1,
-                ),
+                Positioned(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Text(
+                      'hahahhaha',
+                      style: TextStyle(color: Colors.white, fontSize: 16.0),
+                    ),
+                  ),
+                  bottom: 10.0,
+                )
               ],
             ),
+            Expanded(
+                child: ListView(
+              children: <Widget>[
+                ListTile(
+                  leading: const Icon(Icons.home),
+                  title: const Text('首页'),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.image),
+                  title: const Text('手机壁纸'),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.cake),
+                  title: const Text('cosplay.la'),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.search),
+                  title: const Text('以图搜图'),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.exit_to_app),
+                  title: const Text('退出软件'),
+                )
+              ],
+            )),
           ],
         ),
       ),

@@ -62,7 +62,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   void countDown(){
-    var duration = new Duration(seconds: 3);
+    var duration = new Duration(seconds: 5);
     new Future.delayed(duration,goHomePage);
   }
 
@@ -79,8 +79,7 @@ class _SplashPageState extends State<SplashPage> {
     return Container(
         decoration: BoxDecoration( // 背景装饰
           image: DecorationImage(
-              image: NetworkImage('https://img.zcool.cn/community/03'
-                  '72d195ac1cd55a8012062e3b16810.jpg'),
+              image: NetworkImage(url),
               fit: BoxFit.cover
           ),
         ),
@@ -90,8 +89,8 @@ class _SplashPageState extends State<SplashPage> {
             onPressed: goHomePage,
             child:
             Text('进入应用'),
-            textColor: Colors.grey,
-            color: Colors.white30,
+            textColor: Colors.white,
+            color: Colors.black45,
           ),
             top: 22.0,
             right: 10.0,

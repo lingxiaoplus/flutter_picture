@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_picture/recommend.dart';
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -100,15 +101,12 @@ class _HomePageState extends State<HomePage> {
         ),
         drawer: new MenuDrawer(),
         body: TabBarView(
-          children: tabTitles.map((e) {
-            return Container(
-              alignment: Alignment.center,
-              child: Text(
-                e,
-                textScaleFactor: 5,
-              ),
-            );
-          }).toList(),
+          children: <Widget>[
+            Recommend(),
+            Text('hello'),
+            Text('hello1'),
+            Text('hello2'),
+          ],
         ),
       ),
     );

@@ -7,6 +7,7 @@ class ListPage extends StatefulWidget {
   List listData;
   ItemWidgetBuild itemWidgetCreator;
   HeaderWidgetBuild headerCreator;
+
   ListPage(List this.listData,{
     Key key,
     List this.headerList,
@@ -24,13 +25,12 @@ class ListPage extends StatefulWidget {
 class ListPageState extends State<ListPage>{
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       child: ListView.builder(
           itemBuilder: (BuildContext context, int position){
-            buildItemWidget(context, position);
+            return buildItemWidget(context, position);
           },
-        itemCount: _getListCount(),
+        itemCount: _getListCount(),   // 参数决定调用 itemBuilder 中回调函数的次数
       ),
     );
   }
@@ -42,7 +42,7 @@ class ListPageState extends State<ListPage>{
   }
 
   int _getHeaderCount(){
-    int headerCount = widget.headerList != null?widget.headerList.length:0;
+    int headerCount = widget.headerList != null ? widget.headerList.length:0;
     return headerCount;
   }
 
@@ -60,6 +60,15 @@ class ListPageState extends State<ListPage>{
     }
   }
 
+  Widget buildItemWidget(BuildContext context, int position){
+    if(position < _getHeaderCount()){
+      return _headerItemWidget(context, position);
+    }else{
+      int pos = position - _getHeaderCount();
+      return _ItemWidget(context, pos);
+    }
+  }
+
   Widget _ItemWidget(BuildContext context, int position){
     if(widget.itemWidgetCreator != null){
       return widget.itemWidgetCreator(context,position);
@@ -71,15 +80,6 @@ class ListPageState extends State<ListPage>{
         ),
         onTap: ()=> print('item click $position --------------------'),
       );
-    }
-  }
-
-  Widget buildItemWidget(BuildContext context, int position){
-    if(position < _getHeaderCount()){
-      return _headerItemWidget(context, position);
-    }else{
-      int pos = position - _getHeaderCount();
-      return _ItemWidget(context, pos);
     }
   }
 

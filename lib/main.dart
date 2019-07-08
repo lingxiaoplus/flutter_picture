@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
         body: TabBarView(
           children: <Widget>[
             Recommend(),
-            Text('hello'),
+            Text('hello',textAlign: TextAlign.center,),
             Text('hello1'),
             Text('hello2'),
           ],
@@ -127,7 +127,7 @@ class MenuDrawer extends StatelessWidget {
             Stack(
               children: <Widget>[
                 Image.network(
-                  "http://s.cn.bing.net/th?id=OHR.PeelCastle_ZH-CN6366204379_1920x1080.jpg&rf=LaDigue_1920x1080.jpg&pid=hp",
+                  "http://img5.adesk.com/5d1c6b03e7bce7213b64a529?imageView2/3/h/720",
                   height: 200.0,
                   fit: BoxFit.fill,
                 ),

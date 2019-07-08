@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_picture/GlobalProperties.dart';
 import 'package:flutter_picture/main.dart';
 import 'package:dio/dio.dart';
 import 'dart:convert';
+import 'dart:math';
+
 void main() {
   runApp(Splash());
   //沉浸式
@@ -34,7 +37,7 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   bool is_goHome = false;
-  String url = "https://img.zcool.cn/community/0372d195ac1cd55a8012062e3b16810.jpg";
+  String url = "";
  /* void _incrementCounter() {
     setState(() {
       url;
@@ -50,10 +53,11 @@ class _SplashPageState extends State<SplashPage> {
 
   Future getSplashPic() async {
     var dio = new Dio();
-    var response = await dio.get("https://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1");
+    var response = await dio.get(GlobalProperties.BASE_URL + GlobalProperties.VERTICAL_URLS);
     Map map = jsonDecode(response.toString());
-    var image = map['images'][0];
-    var url = "http://s.cn.bing.net${image['url']}";
+    List images = map['res']['vertical'];
+    int index = Random().nextInt(images.length);
+    var url = images[index]['img'];
     setState(() {
       this.url = url;
     });

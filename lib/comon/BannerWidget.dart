@@ -23,7 +23,7 @@ class BannerWidget extends StatefulWidget{
   OnBannerItemClick bannerPress;
   CustomBuild build;
 
-  BannerWidget(double this.height,List<BannerItem> this.datas,{
+  BannerWidget(double this.height,List<BannerItem> this.datas, {
     Key key,
     int this.duration = 5000,
     double this.pointRadius = 3.0,
@@ -51,11 +51,11 @@ class BannerState extends State<BannerWidget>{
   @override
   void initState() {
     double current = widget.datas.length > 0 ?
-      (MAX_COUNT / 2) - ((MAX_COUNT / 2)%widget.datas.length):0.0;
+    (MAX_COUNT / 2) - ((MAX_COUNT / 2)%widget.datas.length):0.0;
     controller = PageController(initialPage: current.toInt());
     _initPageAutoScroll();
-    super.initState();
     print('initState----------------------banner');
+    super.initState();
   }
 
 
@@ -80,13 +80,12 @@ class BannerState extends State<BannerWidget>{
   }
 
   void stop(){
-    timer.cancel();
+    timer?.cancel();
     timer = null;
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     stop();
     print('dispose----------------------banner');
@@ -116,7 +115,7 @@ class BannerState extends State<BannerWidget>{
 
   Widget getViewPager(){
     return PageView.builder(
-        itemCount: widget.datas.length > 0?MAX_COUNT:0,
+        itemCount: widget.datas.length > 0? MAX_COUNT:0,
         controller: controller,
         onPageChanged: onPageChanged,
         itemBuilder: (context,index){
@@ -197,9 +196,8 @@ class BannerState extends State<BannerWidget>{
   }
 
   onPageChanged(index) {
-    selectedIndex = index % widget.datas.length;
     setState(() {
-
+      selectedIndex = index % widget.datas.length;
     });
   }
 }

@@ -18,10 +18,42 @@ class RecommendState extends State<Recommend>{
   int skip = 0;
   List<Picture> wallpapers = [];
   List<BannerItem> bannerList = [];
+  GlobalKey<RefreshIndicatorState> _refreshKey = new GlobalKey();
+
+  ScrollController _scrollController;
+  double scrollDistance = 0.0;
+  final String _scrollDistanceIdentifier = 'scrollDistanceIndentifier';  //tag
+
   @override
   void initState() {
     super.initState();
     getRecommendList();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController?.removeListener(_handleScroll);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_handleScroll);
+  }
+
+  void _handleScroll() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      //加载更多
+      skip+=30;
+      getRecommendList();
+    }
+    scrollDistance = _scrollController.position.pixels;
+    PageStorage.of(context).writeState(context, scrollDistance,
+        identifier: _scrollDistanceIdentifier);
+    setState(() {});
   }
 
   Future getRecommendList() async {
@@ -43,7 +75,8 @@ class RecommendState extends State<Recommend>{
 
     getBannerData(map);
     setState(() {
-
+      wallpapers = wallpapers;
+      bannerList = bannerList;
     });
   }
 
@@ -63,6 +96,7 @@ class RecommendState extends State<Recommend>{
     for(var item in items){
       String cover = item['value']['lcover'];
       String title = item['value']['desc'];
+      if(cover == null) continue;
       print('图片： ${cover}');
       print('标题： ${title}');
       var bannerItem = BannerItem.defaultBannerItem(cover, title);
@@ -70,27 +104,37 @@ class RecommendState extends State<Recommend>{
     }
   }
 
-  static GlobalKey<ScaffoldState> _globalKey = new GlobalKey();
   @override
   Widget build(BuildContext context) {
-    return ListPage(
-      wallpapers,
-      headerList: [1,2],
-      itemWidgetCreator: getItemWidget,
-      headerCreator: (BuildContext context, int position){
-        if(position == 0){
-          print('添加bannerwidget');
-          return BannerWidget(180.0, bannerList,
-            bannerPress: (int position, BannerItem entity){
+    return RefreshIndicator(
+      key: _refreshKey,
+        child: ListPage(
+            wallpapers,
+            headerList: [1],
+            itemWidgetCreator: getItemWidget,
+            headerCreator: (BuildContext context, int position){
+              if(position == 0){
+                print('添加bannerwidget');
+                return BannerWidget(180.0, bannerList,
+                  bannerPress: (int position, BannerItem entity){
 
-            },);
-        }else{
-          print('添加padding');
-          return Padding(padding: EdgeInsets.all(10.0), child:
-          Text('$position -----header------- '),);
-        }
-      },
-    );
+                  },);
+              }else{
+                print('添加padding');
+                return Padding(padding: EdgeInsets.all(10.0), child:
+                Text('$position -----header------- '),);
+              }
+            },
+          scrollController: _scrollController,
+        ),
+        onRefresh: _handleRefresh);
+  }
+
+  Future<Null> _handleRefresh() async{
+    bannerList.clear();
+    wallpapers.clear();
+    skip=0;
+    return getRecommendList();
   }
 
   Widget getItemWidget(BuildContext context, int position) {
@@ -100,10 +144,10 @@ class RecommendState extends State<Recommend>{
       margin: EdgeInsets.all(4.0),
       child: FadeInImage.memoryNetwork(
           placeholder: kTransparentImage,
-          image: wallpapers[position].preview,
+          image: wallpapers[position].preview + GlobalProperties.imgRule_230,
           width: 300,
           height: 200,
-          fit: BoxFit.fill
+          fit: BoxFit.cover
       ),
     );
   }

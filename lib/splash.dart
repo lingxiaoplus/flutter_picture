@@ -6,6 +6,8 @@ import 'package:dio/dio.dart';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter_picture/model/vertical_model_entity.dart';
+
 void main() {
   runApp(Splash());
   //沉浸式
@@ -17,7 +19,6 @@ void main() {
 class Splash extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -46,7 +47,6 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     getSplashPic();
   }
@@ -55,9 +55,9 @@ class _SplashPageState extends State<SplashPage> {
     var dio = new Dio();
     var response = await dio.get(GlobalProperties.BASE_URL + GlobalProperties.VERTICAL_URLS);
     Map map = jsonDecode(response.toString());
-    List images = map['res']['vertical'];
-    int index = Random().nextInt(images.length);
-    var url = images[index]['img'];
+    VerticalModelEntity entity = VerticalModelEntity.fromJson(map);
+    int index = Random().nextInt(entity.res.vertical.length);
+    var url = entity.res.vertical[index].img;
     setState(() {
       this.url = url;
     });

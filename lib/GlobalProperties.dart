@@ -54,4 +54,12 @@ class GlobalProperties{
   //google识图
   static const GOOGLE_URL = "https://images.google.com/imghp?hl=zh-CN&gws_rd=ssl";
 
+  static const imgRule_230 ="?imageView2/3/h/230";//图片规则，从服务器取230大小的图片
+  static const ImgRule_720 ="?imageMogr2/thumbnail/!1280x720r/gravity/Center/crop/1280x720";
+  static const ImgRule_1080 ="?imageMogr2/thumbnail/!1920x1080r/gravity/Center/crop/1920x1080";
+
+  static const ImgRule_vertical_720 ="?imageMogr2/thumbnail/!720x1280r/gravity/Center/crop/720x1280";
+  static const ImgRule_vertical_1080 ="?imageMogr2/thumbnail/!1080x1920r/gravity/Center/crop/1080x1920";
+
+
 }

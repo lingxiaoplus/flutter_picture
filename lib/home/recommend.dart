@@ -8,13 +8,15 @@ import 'package:flutter_picture/comon/BannerWidget.dart';
 import 'package:flutter_picture/comon/ListPage.dart';
 import 'package:transparent_image/transparent_image.dart';
 
+import '../HttpUtil.dart';
+
 class Recommend extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return RecommendState();
   }
 }
-class RecommendState extends State<Recommend>{
+class RecommendState extends State<Recommend> with AutomaticKeepAliveClientMixin{
   int skip = 0;
   List<Picture> wallpapers = [];
   List<BannerItem> bannerList = [];
@@ -57,7 +59,7 @@ class RecommendState extends State<Recommend>{
   }
 
   Future getRecommendList() async {
-    var dio = new Dio();
+    var dio = HttpUtil.getDio();
     var response = await dio.get(
         GlobalProperties.BASE_URL +
             GlobalProperties.HOMEPAGE_URL,
@@ -151,6 +153,9 @@ class RecommendState extends State<Recommend>{
       ),
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 
 
 }

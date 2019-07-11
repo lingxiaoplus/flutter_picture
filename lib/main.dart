@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_picture/recommend.dart';
+import 'package:flutter_picture/home/recommend.dart';
+
+import 'package:flutter_picture/home/category.dart';
+
+import 'home/gank.dart';
+import 'home/special.dart';
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -20,7 +25,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(title: '浏览'),
+      home: HomePage(),
     );
   }
 }
@@ -33,34 +38,38 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int _counter = 0;
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
   var tabTitles = ["推荐", "分类", "最新", "专辑"];
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
+  TabController tabController;
+  //定义一个globalKey, 由于GlobalKey要保持全局唯一性，我们使用静态变量存储
+  final GlobalKey<ScaffoldState> _globalKey = new GlobalKey();
+  var appbarText = Text('推荐');
   @override
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays(
         [SystemUiOverlay.top, SystemUiOverlay.bottom]);
+    tabController = TabController(length: tabTitles.length, vsync: this)
+      ..addListener((){
+        setState(() {
+          appbarText = Text(tabTitles[tabController.index]);
+        });
+      });
   }
 
-  //定义一个globalKey, 由于GlobalKey要保持全局唯一性，我们使用静态变量存储
-  static GlobalKey<ScaffoldState> _globalKey = new GlobalKey();
+  @override
+  void dispose(){
+    super.dispose();
+    tabController.dispose();
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: tabTitles.length,
-      child: Scaffold(
+    return Scaffold(
         key: _globalKey,
         appBar: AppBar(
-          title: Text(widget.title),
+          title: appbarText,
           leading: new IconButton(
               icon: Image.asset(
                 'assets/ic_appbar_menu.png',
@@ -96,19 +105,20 @@ class _HomePageState extends State<HomePage> {
             labelPadding: EdgeInsets.all(1),
             indicatorSize: TabBarIndicatorSize.label,
             indicatorColor: Colors.white,
+            controller: tabController,
           ),
         ),
         drawer: new MenuDrawer(),
         body: TabBarView(
+          controller: tabController,
           children: <Widget>[
             Recommend(),
-            Text('hello',textAlign: TextAlign.center,),
-            Text('hello1'),
-            Text('hello2'),
+            CategoryPage(),
+            GankPage(),
+            SpecialPage(),
           ],
         ),
-      ),
-    );
+      );
   }
 }
 
@@ -121,6 +131,8 @@ class MenuDrawer extends StatelessWidget {
       child: MediaQuery.removePadding(
         context: context,
         removeTop: true,
+        removeLeft: true,
+        removeRight: true,
         child: Column(
           children: <Widget>[
             Stack(

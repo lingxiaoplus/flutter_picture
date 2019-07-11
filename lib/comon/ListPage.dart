@@ -13,13 +13,13 @@ class ListPage extends StatefulWidget {
   FooterWidgetBuild footerCreator;
 
   ScrollController scrollController;
-
-  bool have_footer = true;
+  bool have_footer;
 
   ListPage(
     List this.listData, {
     Key key,
     List this.headerList,
+    bool this.have_footer = true,
     ItemWidgetBuild this.itemWidgetCreator,
     HeaderWidgetBuild this.headerCreator,
     ScrollController this.scrollController,
@@ -34,17 +34,15 @@ class ListPage extends StatefulWidget {
 class ListPageState extends State<ListPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: StaggeredGridView.countBuilder(
-        controller: widget.scrollController,
-        itemBuilder: (BuildContext context, int position) {
-          return buildItemWidget(context, position);
-        },
-        itemCount: _getListCount(),
-        crossAxisCount:
-            MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
-        staggeredTileBuilder: (int index) => getStaggerCount(index),
-      ),
+    return StaggeredGridView.countBuilder(
+      controller: widget.scrollController,
+      itemBuilder: (BuildContext context, int position) {
+        return buildItemWidget(context, position);
+      },
+      itemCount: _getListCount(),
+      crossAxisCount:
+      MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
+      staggeredTileBuilder: (int index) => getStaggerCount(index),
     );
     return Container(
       child: ListView.builder(
@@ -65,7 +63,8 @@ class ListPageState extends State<ListPage> {
     }else if(position == _getListCount() - _getFooterCount()){
       return StaggeredTile.fit(2);
     }else{
-      return StaggeredTile.count(1, position.isEven ? 2 : 1);
+      //return StaggeredTile.count(1, position.isEven ? 2 : 1);
+      return StaggeredTile.count(1,1);
     }
   }
 

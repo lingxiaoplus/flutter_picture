@@ -39,11 +39,6 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   bool is_goHome = false;
   String url = "";
- /* void _incrementCounter() {
-    setState(() {
-      url;
-    });
-  }*/
 
   @override
   void initState() {
@@ -72,7 +67,7 @@ class _SplashPageState extends State<SplashPage> {
 
   void goHomePage(){
     if(!is_goHome){
-      Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (context)=>new HomePage(title: '浏览')),
+      Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (context)=>new HomePage()),
               (Route<dynamic> rout)=>false);
       is_goHome = true;
     }

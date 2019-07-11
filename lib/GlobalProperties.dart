@@ -42,6 +42,10 @@ class GlobalProperties{
    */
   static const COMMENT_URL = "/v2/wallpaper/wallpaper";
 
+  //干货集中营api
+  static const GANKURL = "http://gank.io/api/data/%E7%A6%8F%E5%88%A9/";
+
+
   //安卓壁纸的搜索
   static const SEARCH_URL = "http://so.picasso.adesk.com";
   //关键词

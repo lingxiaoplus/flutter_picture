@@ -32,6 +32,7 @@ class ListPage extends StatefulWidget {
 }
 
 class ListPageState extends State<ListPage> {
+
   @override
   Widget build(BuildContext context) {
     return StaggeredGridView.countBuilder(
@@ -43,14 +44,6 @@ class ListPageState extends State<ListPage> {
       crossAxisCount:
       MediaQuery.of(context).orientation == Orientation.portrait ? 2 : 4,
       staggeredTileBuilder: (int index) => getStaggerCount(index),
-    );
-    return Container(
-      child: ListView.builder(
-        itemBuilder: (BuildContext context, int position) {
-          return buildItemWidget(context, position);
-        },
-        itemCount: _getListCount(), // 参数决定调用 itemBuilder 中回调函数的次数
-      ),
     );
   }
 

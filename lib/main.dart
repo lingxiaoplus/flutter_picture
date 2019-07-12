@@ -11,22 +11,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: HomePage(),
-    );
+    return HomePage();
   }
 }
 
@@ -38,19 +23,22 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   var tabTitles = ["推荐", "分类", "最新", "专辑"];
   TabController tabController;
+
   //定义一个globalKey, 由于GlobalKey要保持全局唯一性，我们使用静态变量存储
   final GlobalKey<ScaffoldState> _globalKey = new GlobalKey();
   var appbarText = Text('推荐');
+
   @override
   void initState() {
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays(
         [SystemUiOverlay.top, SystemUiOverlay.bottom]);
     tabController = TabController(length: tabTitles.length, vsync: this)
-      ..addListener((){
+      ..addListener(() {
         setState(() {
           appbarText = Text(tabTitles[tabController.index]);
         });
@@ -58,67 +46,97 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   }
 
   @override
-  void dispose(){
+  void dispose() {
     super.dispose();
     tabController.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _globalKey,
-        appBar: AppBar(
-          title: appbarText,
-          leading: new IconButton(
-              icon: Image.asset(
-                'assets/ic_appbar_menu.png',
-                width: 20,
-                height: 20,
-              ),
-              onPressed: () {
-                print('打开抽屉');
-                //Scaffold.of(context).openDrawer();
-                _globalKey.currentState.openDrawer();
-              }),
-          actions: <Widget>[
-            IconButton(
-                icon: Image.asset(
-                  'assets/ic_appbar_search.png',
-                  width: 20,
-                  height: 20
+      key: _globalKey,
+      appBar: AppBar(
+        title: appbarText,
+        leading: new IconButton(
+            icon: Image.asset(
+              'assets/ic_appbar_menu.png',
+              width: 20,
+              height: 20,
+            ),
+            onPressed: () {
+              print('打开抽屉');
+              //Scaffold.of(context).openDrawer();
+              _globalKey.currentState.openDrawer();
+            }),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.search,color: Colors.white,),
+              onPressed: () => _globalKey.currentState
+                  .showSnackBar(SnackBar(content: Text('搜索')))),
+          PopupMenuButton(
+            padding: EdgeInsets.all(1.0),
+            onSelected: (String value) {},
+            itemBuilder: (BuildContext context) {
+              return <PopupMenuEntry<String>>[
+                PopupMenuItem(
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Text('查看下载图片')
+                    ],
+                  ),
+                  value: '查看下载图片',
                 ),
-                onPressed: () => _globalKey.currentState
-                    .showSnackBar(SnackBar(content: Text('搜索')))),
-            IconButton(
-                icon: Image.asset(
-                  'assets/ic_appbar_more.png',
-                  width: 20,
-                  height: 20,
+                PopupMenuItem(
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Text('设置')
+                    ],
+                  ),
+                  value: '设置',
+                ),PopupMenuItem(
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Text('反馈')
+                    ],
+                  ),
+                  value: '查看下载图片',
                 ),
-                onPressed: () {}),
-          ],
-          bottom: TabBar(
-            tabs:
-                tabTitles.map((String title) => new Tab(text: title)).toList(),
-            isScrollable: false,
-            labelPadding: EdgeInsets.all(1),
-            indicatorSize: TabBarIndicatorSize.label,
-            indicatorColor: Colors.white,
-            controller: tabController,
+                PopupMenuItem(
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Text('关于')
+                    ],
+                  ),
+                  value: '关于',
+                )
+              ];
+            },
           ),
-        ),
-        drawer: new MenuDrawer(),
-        body: TabBarView(
+        ],
+        bottom: TabBar(
+          tabs: tabTitles.map((String title) => new Tab(text: title)).toList(),
+          isScrollable: false,
+          labelPadding: EdgeInsets.all(1),
+          indicatorSize: TabBarIndicatorSize.label,
+          indicatorColor: Colors.white,
           controller: tabController,
-          children: <Widget>[
-            Recommend(),
-            CategoryPage(),
-            GankPage(),
-            SpecialPage(),
-          ],
         ),
-      );
+      ),
+      drawer: new MenuDrawer(),
+      body: TabBarView(
+        controller: tabController,
+        children: <Widget>[
+          Recommend(),
+          CategoryPage(),
+          GankPage(),
+          SpecialPage(),
+        ],
+      ),
+    );
   }
 }
 

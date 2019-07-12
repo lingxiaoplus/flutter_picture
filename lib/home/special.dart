@@ -19,6 +19,7 @@ class SpecialPageState extends State<SpecialPage>
   @override
   bool get wantKeepAlive => true;
   final GlobalKey<RefreshIndicatorState> _refreshKey = new GlobalKey();
+
   List<SpecialModelResAlbum> wallpapers = [];
   ScrollController _scrollController;
   int skip = 0;
@@ -31,16 +32,61 @@ class SpecialPageState extends State<SpecialPage>
 
   @override
   Widget build(BuildContext context) {
+    return Stack(
+      children: <Widget>[
+        RefreshIndicator(
+            key: _refreshKey,
+            child: ListView.builder(
+              itemBuilder: getItemWidget,
+              itemCount: wallpapers.length + 1, //加上一个尾巴
+            ),
+            onRefresh: _handleRefresh),
+        Positioned(
+            bottom: 20.0,
+            right: 20.0,
+            child: FloatingActionButton(
+              onPressed: () {
+                _scrollController.animateTo(0.0,
+                    duration: Duration(milliseconds: 1000),
+                    curve: Curves.easeOut);
+              },
+              elevation: 13.0,
+              child: Icon(Icons.vertical_align_top),
+            ))
+      ],
+    );
+
     return RefreshIndicator(
         key: _refreshKey,
         child: ListView.builder(
           itemBuilder: getItemWidget,
-          itemCount: wallpapers.length,
+          itemCount: wallpapers.length + 1, //加上一个尾巴
         ),
         onRefresh: _handleRefresh);
   }
 
   Widget getItemWidget(BuildContext context, int position) {
+    if (position == wallpapers.length) {
+      skip += GlobalProperties.limit;
+      getData();
+      return Container(
+          padding: const EdgeInsets.all(12.0),
+          alignment: Alignment.center,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: 24.0,
+                height: 24.0,
+                child: CircularProgressIndicator(strokeWidth: 2.0),
+              ),
+              Padding(
+                padding: EdgeInsets.all(8),
+                child: Text('加载更多数据'),
+              )
+            ],
+          ));
+    }
     return Card(
       color: Colors.white,
       elevation: 4.0,
@@ -54,11 +100,12 @@ class SpecialPageState extends State<SpecialPage>
               Expanded(
                 flex: 1,
                 child: FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage,
-                  image: wallpapers[position].cover,
-                  width: 100,
-                  height: 80,
-                  fit: BoxFit.cover),),
+                    placeholder: kTransparentImage,
+                    image: wallpapers[position].cover,
+                    width: 100,
+                    height: 80,
+                    fit: BoxFit.cover),
+              ),
               Expanded(
                   flex: 2,
                   child: Column(
@@ -79,9 +126,7 @@ class SpecialPageState extends State<SpecialPage>
                         softWrap: true,
                       )
                     ],
-                  )
-              ),
-
+                  )),
             ],
           ),
           Divider(
@@ -95,14 +140,17 @@ class SpecialPageState extends State<SpecialPage>
             child: Row(
               children: <Widget>[
                 ClipOval(
-
-                  child:FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage,
-                    image: wallpapers[position].user.avatar,
-                    width: 20,
-                    height: 20,
-                    fit: BoxFit.cover),),
-                Padding(padding: EdgeInsets.only(left: 10.0),child: Text(wallpapers[position].user.name),)
+                  child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image: wallpapers[position].user.avatar,
+                      width: 20,
+                      height: 20,
+                      fit: BoxFit.cover),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 10.0),
+                  child: Text(wallpapers[position].user.name),
+                )
               ],
             ),
           )
@@ -112,6 +160,8 @@ class SpecialPageState extends State<SpecialPage>
   }
 
   Future<void> _handleRefresh() {
+    skip = 0;
+    wallpapers.clear();
     return getData();
   }
 

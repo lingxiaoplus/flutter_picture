@@ -65,5 +65,6 @@ class GlobalProperties{
   static const ImgRule_vertical_720 ="?imageMogr2/thumbnail/!720x1280r/gravity/Center/crop/720x1280";
   static const ImgRule_vertical_1080 ="?imageMogr2/thumbnail/!1080x1920r/gravity/Center/crop/1080x1920";
 
+  static const HERO_TAG_LOAD_IMAGE = "load_image";
 
 }

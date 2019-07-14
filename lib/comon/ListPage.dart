@@ -99,11 +99,20 @@ class ListPageState extends State<ListPage> {
       return Container(
           padding: const EdgeInsets.all(12.0),
           alignment: Alignment.center,
-          child: SizedBox(
-              width: 24.0,
-              height: 24.0,
-              child: CircularProgressIndicator(strokeWidth: 2.0))
-      );
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              SizedBox(
+                width: 24.0,
+                height: 24.0,
+                child: CircularProgressIndicator(strokeWidth: 2.0),
+              ),
+              Padding(
+                padding: EdgeInsets.all(8),
+                child: Text('加载更多数据'),
+              )
+            ],
+          ));
     }
   }
 

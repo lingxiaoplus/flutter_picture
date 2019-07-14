@@ -173,8 +173,10 @@ class SpecialPageState extends State<SpecialPage>
     Map map = jsonDecode(response.toString());
     SpecialModelEntity special = SpecialModelEntity.fromJson(map);
     wallpapers.addAll(special.res.album);
-    setState(() {
-      wallpapers = wallpapers;
-    });
+    if(mounted){
+      setState(() {
+        wallpapers = wallpapers;
+      });
+    }
   }
 }

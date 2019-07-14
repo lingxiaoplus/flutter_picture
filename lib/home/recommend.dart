@@ -84,10 +84,12 @@ class RecommendState extends State<Recommend>
     }
 
     getBannerData(map);
-    setState(() {
-      wallpapers = wallpapers;
-      bannerList = bannerList;
-    });
+    if(mounted){
+      setState(() {
+        wallpapers = wallpapers;
+        bannerList = bannerList;
+      });
+    }
   }
 
   void getBannerData(Map map) {

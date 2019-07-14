@@ -79,8 +79,11 @@ class CategoryPageState extends State<CategoryPage> with AutomaticKeepAliveClien
     if(category.res.category.length%2 != 0 && category.res.category.length>1){
       category.res.category = category.res.category.sublist(0,category.res.category.length-1);
     }
-    setState(() {
-      wallpapers = category.res.category;
-    });
+    // mounted 为 true 表示当前页面挂在到构件树中，为 false 时未挂载当前页面
+    if(mounted){
+      setState(() {
+        wallpapers = category.res.category;
+      });
+    }
   }
 }

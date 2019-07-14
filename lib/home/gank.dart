@@ -125,9 +125,12 @@ class GankPageState extends State<GankPage> with AutomaticKeepAliveClientMixin {
     Map map = jsonDecode(response.toString());
     GankWelfareModelEntity welfare = GankWelfareModelEntity.fromJson(map);
     wallpapers.addAll(welfare.results);
-    for(var item in wallpapers){
+    for(var item in welfare.results){
       images.add(item.url);
     }
-    setState(() {});
+    if(mounted){
+      setState(() {
+      });
+    }
   }
 }

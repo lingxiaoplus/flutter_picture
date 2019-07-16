@@ -17,7 +17,7 @@ class GlobalProperties{
   /**
    * banner
    */
-  static const BANNER_URL = "/v1/wallpaper/";
+  static const BANNER_URL = "/v1/wallpaper";
 
   /**
    * 竖屏
@@ -45,7 +45,7 @@ class GlobalProperties{
   //干货集中营api
   static const GANKURL = "http://gank.io/api/data/%E7%A6%8F%E5%88%A9/";
 
-
+  static const HITOKOTO = "https://v1.hitokoto.cn/";
   //安卓壁纸的搜索
   static const SEARCH_URL = "http://so.picasso.adesk.com";
   //关键词

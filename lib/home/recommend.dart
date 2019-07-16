@@ -10,6 +10,7 @@ import 'package:transparent_image/transparent_image.dart';
 
 import '../HttpUtil.dart';
 import '../image_viewpager.dart';
+import 'detail/BannerDetail.dart';
 
 class Recommend extends StatefulWidget {
   @override
@@ -108,10 +109,11 @@ class RecommendState extends State<Recommend>
     for (var item in items) {
       String cover = item['value']['lcover'];
       String title = item['value']['desc'];
+      String id = item['value']['id'];
       if (cover == null) continue;
       print('图片： ${cover}');
       print('标题： ${title}');
-      var bannerItem = BannerItem.defaultBannerItem(cover, title);
+      var bannerItem = BannerItem.defaultBannerItem(cover, title,id);
       bannerList.add(bannerItem);
     }
   }
@@ -132,7 +134,12 @@ class RecommendState extends State<Recommend>
                   return BannerWidget(
                     180.0,
                     bannerList,
-                    bannerPress: (int position, BannerItem entity) {},
+                    bannerPress: (int position, BannerItem entity) {
+                      print('id is ${entity.id}');
+                      Navigator.of(context).push(new MaterialPageRoute(
+                          builder: (context) => new BannerDetail(id: entity.id),
+                      ));
+                    },
                   );
                 } else {
                   print('添加padding');

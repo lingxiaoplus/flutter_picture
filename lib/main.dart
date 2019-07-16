@@ -1,9 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_picture/home/recommend.dart';
 
 import 'package:flutter_picture/home/category.dart';
 
+import 'GlobalProperties.dart';
+import 'HttpUtil.dart';
 import 'home/gank.dart';
 import 'home/special.dart';
 
@@ -27,6 +31,7 @@ class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
   var tabTitles = ["推荐", "分类", "最新", "专辑"];
   TabController tabController;
+  String _hitokoto = "";
 
   //定义一个globalKey, 由于GlobalKey要保持全局唯一性，我们使用静态变量存储
   final GlobalKey<ScaffoldState> _globalKey = new GlobalKey();
@@ -43,6 +48,7 @@ class _HomePageState extends State<HomePage>
           appbarText = Text(tabTitles[tabController.index]);
         });
       });
+    getHitokoto();
   }
 
   @override
@@ -126,7 +132,7 @@ class _HomePageState extends State<HomePage>
           controller: tabController,
         ),
       ),
-      drawer: new MenuDrawer(),
+      drawer: new MenuDrawer(hitokoto: _hitokoto,),
       body: TabBarView(
         controller: tabController,
         children: <Widget>[
@@ -138,11 +144,23 @@ class _HomePageState extends State<HomePage>
       ),
     );
   }
+
+  Future<void> getHitokoto() async{
+    var dio = HttpUtil.getDio();
+    var response = await dio.get(GlobalProperties.HITOKOTO);
+    Map map = jsonDecode(response.toString());
+    String hitokoto = map['hitokoto'];
+    String from = map['from'];
+    setState(() {
+      _hitokoto = hitokoto;
+    });
+  }
+  
 }
 
 class MenuDrawer extends StatelessWidget {
-  const MenuDrawer({Key key}) : super(key: key);
-
+  String hitokoto;
+  MenuDrawer({Key key,this.hitokoto}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -164,7 +182,7 @@ class MenuDrawer extends StatelessWidget {
                   child: Padding(
                     padding: EdgeInsets.symmetric(horizontal: 10.0),
                     child: Text(
-                      'hahahhaha',
+                      hitokoto,
                       style: TextStyle(color: Colors.white, fontSize: 16.0),
                     ),
                   ),

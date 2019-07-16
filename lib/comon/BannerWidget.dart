@@ -205,7 +205,8 @@ class BannerState extends State<BannerWidget>{
 class BannerItem{
   String itemImagePath;
   Widget itemText;
-  static BannerItem defaultBannerItem(String image, String text){
+  String id;
+  static BannerItem defaultBannerItem(String image, String text,String id){
     if(text == null) text = '';
     if(image == null) image = '';
     BannerItem item = BannerItem();
@@ -220,6 +221,7 @@ class BannerItem{
     );
 
     item.itemText = textWidget;
+    item.id = id;
     return item;
   }
 }

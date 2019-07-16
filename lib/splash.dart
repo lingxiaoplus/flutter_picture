@@ -8,6 +8,8 @@ import 'dart:math';
 
 import 'package:flutter_picture/model/vertical_model_entity.dart';
 
+import 'HttpUtil.dart';
+
 void main() {
   runApp(Splash());
   //沉浸式
@@ -47,7 +49,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future getSplashPic() async {
-    var dio = new Dio();
+    var dio = HttpUtil.getDio();
     var response = await dio.get(GlobalProperties.BASE_URL + GlobalProperties.VERTICAL_URLS);
     Map map = jsonDecode(response.toString());
     VerticalModelEntity entity = VerticalModelEntity.fromJson(map);

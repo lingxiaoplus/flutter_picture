@@ -47,6 +47,28 @@ class CategoryPageState extends State<CategoryPage> with AutomaticKeepAliveClien
       color: Colors.white,
       elevation: 4.0,
       margin: EdgeInsets.all(4.0),
+      child: Stack(
+        alignment:Alignment.center,
+        children: <Widget>[
+          FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image: wallpapers[position].cover,
+              width: 300,
+              height: 200,
+              fit: BoxFit.cover
+          ),
+          Padding(
+            padding: EdgeInsets.all(4),
+            child: Text(
+              wallpapers[position].rname,
+              style: TextStyle(color: Colors.white,fontSize: 20.0)),),
+        ],
+      ),
+    );
+    return Card(
+      color: Colors.white,
+      elevation: 4.0,
+      margin: EdgeInsets.all(4.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[

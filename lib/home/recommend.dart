@@ -159,7 +159,7 @@ class RecommendState extends State<Recommend>
               onPressed: () {
                 _scrollController.animateTo(0,
                     duration: Duration(milliseconds: 1000),
-                    curve: Curves.easeOut);
+                    curve: Curves.linearToEaseOut);
               },
               elevation: 13.0,
               child: Icon(Icons.vertical_align_top),

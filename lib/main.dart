@@ -155,7 +155,94 @@ class _HomePageState extends State<HomePage>
       _hitokoto = hitokoto;
     });
   }
-  
+
+  List<Widget> _sliverBuilder(BuildContext context, bool innerBoxIsScrolled) {
+    return <Widget>[
+      SliverAppBar(
+        centerTitle: true, //标题居中
+ //       expandedHeight: 100.0, //展开高度200
+        //         backgroundColor: Colors.pink,
+        //      floating: false, //不随着滑动隐藏标题
+        pinned: false, //不固定在顶部
+        //       snap: false,
+        title: appbarText,
+        /*flexibleSpace: FlexibleSpaceBar(
+          centerTitle: true,
+          background: Image.asset(
+            "assets/pic.jpg",
+            fit: BoxFit.cover,
+          ),
+        ),*/
+        leading: new IconButton(
+            icon: Image.asset(
+              'assets/ic_appbar_menu.png',
+              width: 20,
+              height: 20,
+            ),
+            onPressed: () {
+              print('打开抽屉');
+              //Scaffold.of(context).openDrawer();
+              _globalKey.currentState.openDrawer();
+            }),
+        actions: <Widget>[
+          IconButton(
+              icon: Icon(Icons.search,color: Colors.white,),
+              onPressed: () => _globalKey.currentState
+                  .showSnackBar(SnackBar(content: Text('搜索')))),
+          PopupMenuButton(
+            padding: EdgeInsets.all(1.0),
+            onSelected: (String value) {},
+            itemBuilder: (BuildContext context) {
+              return <PopupMenuEntry<String>>[
+                PopupMenuItem(
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Text('查看下载图片')
+                    ],
+                  ),
+                  value: '查看下载图片',
+                ),
+                PopupMenuItem(
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Text('设置')
+                    ],
+                  ),
+                  value: '设置',
+                ),PopupMenuItem(
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Text('反馈')
+                    ],
+                  ),
+                  value: '查看下载图片',
+                ),
+                PopupMenuItem(
+                  child: new Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Text('关于')
+                    ],
+                  ),
+                  value: '关于',
+                )
+              ];
+            },
+          ),
+        ],
+        bottom: TabBar(
+          tabs: tabTitles.map((String title) => new Tab(text: title)).toList(),
+          isScrollable: false,
+          indicatorSize: TabBarIndicatorSize.label,
+          indicatorColor: Colors.white,
+          controller: tabController,
+        ),
+      )
+    ];
+  }
 }
 
 class MenuDrawer extends StatelessWidget {

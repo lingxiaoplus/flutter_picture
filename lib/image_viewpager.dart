@@ -39,7 +39,7 @@ class _ImageViewPageState extends State<ImageViewPage> {
         appBar: AppBar(
           elevation: 0,
           backgroundColor: Colors.transparent,
-          title: Text('${position}/${widget.images.length}'),
+          title: Text('${position+1}/${widget.images.length}'),
           actions: <Widget>[
             IconButton(
                 icon: const Icon(Icons.message),

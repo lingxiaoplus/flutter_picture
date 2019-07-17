@@ -77,6 +77,7 @@ class _SplashPageState extends State<SplashPage> {
   
   @override
   Widget build(BuildContext context) {
+    print('网络图片地址: $url');
     return Container(
         decoration: BoxDecoration( // 背景装饰
           image: DecorationImage(

@@ -45,6 +45,7 @@ class SpecialPageState extends State<SpecialPage>
             bottom: 20.0,
             right: 20.0,
             child: FloatingActionButton(
+              heroTag: "bt3",
               onPressed: () {
                 _scrollController.animateTo(0.0,
                     duration: Duration(milliseconds: 1000),

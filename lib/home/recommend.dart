@@ -156,6 +156,7 @@ class RecommendState extends State<Recommend>
             bottom: 20.0,
             right: 20.0,
             child: FloatingActionButton(
+              heroTag: "bt1",
               onPressed: () {
                 _scrollController.animateTo(0,
                     duration: Duration(milliseconds: 1000),
@@ -177,8 +178,8 @@ class RecommendState extends State<Recommend>
 
   Widget getItemWidget(BuildContext context, int position) {
     return GestureDetector(
-      //child: Hero(
-        //tag: GlobalProperties.HERO_TAG_LOAD_IMAGE,
+      child: Hero(
+        tag: GlobalProperties.HERO_TAG_LOAD_IMAGE + "$position",
         child: Card(
           color: Colors.white,
           elevation: 4.0,
@@ -192,24 +193,18 @@ class RecommendState extends State<Recommend>
             fit: BoxFit.cover,
           )
         ),
-      //),
+      ),
       onTap: () {
-        /*Navigator.push(context, PageRouteBuilder(pageBuilder:
-            (BuildContext context, Animation animation,
-                Animation secondaryAnimation) {
-          return FadeTransition(
-            child:  ImageViewPage(
-              images: images,
-              position: position,
-            ),
-          );
-        }));*/
-        Navigator.of(context).push(new MaterialPageRoute(
-
-            builder: (context) => new ImageViewPage(
+        Navigator.push(context, PageRouteBuilder(
+            pageBuilder: (BuildContext context, Animation animation, Animation secondaryAnimation) {
+              return FadeTransition(
+                opacity: animation,
+                child: ImageViewPage(
                   images: images,
                   position: position,
-                )));
+                ),
+              );
+            }));
       },
     );
   }

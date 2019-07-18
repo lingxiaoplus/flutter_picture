@@ -28,47 +28,14 @@ class RecommendState extends State<Recommend>
   List<String> images = [];
 
   GlobalKey<RefreshIndicatorState> _refreshKey = new GlobalKey();
+  GlobalKey<ListPageState> _listPageKey = new GlobalKey();
 
-  ScrollController _scrollController;
   double scrollDistance = 0.0;
-  final String _scrollDistanceIdentifier = 'scrollDistanceIndentifier'; //tag
 
   @override
   void initState() {
     super.initState();
     getRecommendList();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _scrollController?.removeListener(_handleScroll);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _scrollController = ScrollController();
-    _scrollController.addListener(_handleScroll);
-  }
-
-  void _handleScroll() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      //加载更多
-      skip += 30;
-      getRecommendList();
-    }
-    if (_scrollController.position.pixels > scrollDistance) {
-      print('向下拉');
-    } else {
-      print('往回拉');
-    }
-
-    scrollDistance = _scrollController.position.pixels;
-    PageStorage.of(context).writeState(context, scrollDistance,
-        identifier: _scrollDistanceIdentifier);
-    setState(() {});
   }
 
   Future getRecommendList() async {
@@ -127,6 +94,8 @@ class RecommendState extends State<Recommend>
             key: _refreshKey,
             child: ListPage(
               wallpapers,
+              key:_listPageKey,
+              mainAxisExtent: 200.0,
               headerList: [1],
               itemWidgetCreator: getItemWidget,
               headerCreator: (BuildContext context, int position) {
@@ -150,7 +119,10 @@ class RecommendState extends State<Recommend>
                   );
                 }
               },
-              scrollController: _scrollController,
+              onLoadMore: (){
+                skip += 30;
+                getRecommendList();
+              },
             ),
             onRefresh: _handleRefresh),
         Positioned(
@@ -159,9 +131,7 @@ class RecommendState extends State<Recommend>
             child: FloatingActionButton(
               heroTag: "bt1",
               onPressed: () {
-                _scrollController.animateTo(0,
-                    duration: Duration(milliseconds: 1000),
-                    curve: Curves.fastOutSlowIn);
+                _listPageKey.currentState.smoothToPosition(0, Duration(seconds: 1));
               },
               elevation: 13.0,
               child: Icon(Icons.vertical_align_top),
@@ -183,8 +153,8 @@ class RecommendState extends State<Recommend>
         tag: GlobalProperties.HERO_TAG_LOAD_IMAGE + "$position",
         child: Card(
             color: Colors.white,
-            elevation: 4.0,
-            margin: EdgeInsets.all(4.0),
+            elevation: 2.0,
+            margin: EdgeInsets.all(2.0),
             child: FadeInImage.memoryNetwork(
               placeholder: kTransparentImage,
               image:

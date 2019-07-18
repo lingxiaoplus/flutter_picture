@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 
 import '../GlobalProperties.dart';
+import '../main.dart';
 import 'category.dart';
 import 'detail/VerticalDetail.dart';
 
@@ -47,6 +48,7 @@ class VerticalPageState extends State<VerticalPage>
             controller: tabController,
           ),
         ),
+        //drawer: new MenuDrawer(),
         body: TabBarView(
             controller: tabController,
             children: <Widget>[

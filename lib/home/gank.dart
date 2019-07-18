@@ -22,44 +22,18 @@ class GankPageState extends State<GankPage> with AutomaticKeepAliveClientMixin,S
   final GlobalKey<RefreshIndicatorState> _refreshKey = new GlobalKey();
   List<GankWelfareModelResult> wallpapers = [];
   List<String> images = [];
-  ScrollController _scrollController;
-  final limit = 10;
+  GlobalKey<ListPageState> _listPageKey = new GlobalKey();
+
+  final limit = 30;
   int page = 1;
   double scrollDistance = 0.0;
-  final String _scrollDistanceIdentifier = 'scrollDistanceIndentifier'; //tag
 
   @override
   void initState() {
     super.initState();
-
     getData();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _scrollController?.removeListener(_handleScroll);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _scrollController = ScrollController();
-    _scrollController.addListener(_handleScroll);
-  }
-
-  void _handleScroll() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      //加载更多
-      page++;
-      getData();
-    }
-    scrollDistance = _scrollController.position.pixels;
-    PageStorage.of(context).writeState(context, scrollDistance,
-        identifier: _scrollDistanceIdentifier);
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,8 +43,13 @@ class GankPageState extends State<GankPage> with AutomaticKeepAliveClientMixin,S
             key: _refreshKey,
             child: ListPage(
               wallpapers,
+              key: _listPageKey,
+              mainAxisExtent: 300.0,
               itemWidgetCreator: getItemWidget,
-              scrollController: _scrollController,
+              onLoadMore: (){
+                page++;
+                getData();
+              },
             ),
             onRefresh: _handleRefresh),
         Positioned(
@@ -79,9 +58,8 @@ class GankPageState extends State<GankPage> with AutomaticKeepAliveClientMixin,S
             child: FloatingActionButton(
               heroTag: "bt2",
               onPressed: () {
-                _scrollController.animateTo(0,
-                    duration: Duration(milliseconds: 1000),
-                    curve: Curves.easeOut);
+                _listPageKey.currentState.smoothToPosition(0,
+                     Duration(milliseconds: 1000));
               },
               elevation: 13.0,
               child: Icon(Icons.vertical_align_top),

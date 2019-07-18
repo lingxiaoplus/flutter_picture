@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage>
   String _hitokoto = "";
 
   //定义一个globalKey, 由于GlobalKey要保持全局唯一性，我们使用静态变量存储
-  final GlobalKey<ScaffoldState> _globalKey = new GlobalKey();
+  static final GlobalKey<ScaffoldState> _globalKey = new GlobalKey();
   var appbarText = Text('推荐');
 
   @override
@@ -247,8 +247,9 @@ class _HomePageState extends State<HomePage>
 }
 
 class MenuDrawer extends StatelessWidget {
-  String hitokoto;
-  MenuDrawer({Key key,this.hitokoto}) : super(key: key);
+  final String hitokoto;
+
+  MenuDrawer({Key key,this.hitokoto=""}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -272,6 +273,10 @@ class MenuDrawer extends StatelessWidget {
                     child: Text(
                       hitokoto,
                       style: TextStyle(color: Colors.white, fontSize: 16.0),
+                      maxLines: 1,
+                      textAlign: TextAlign.left,
+                      overflow: TextOverflow.ellipsis,
+                      softWrap: true,
                     ),
                   ),
                   bottom: 10.0,
@@ -284,12 +289,15 @@ class MenuDrawer extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.home),
                   title: const Text('首页'),
+                  selected: true,
                 ),
+
                 ListTile(
                   leading: const Icon(Icons.image),
                   title: const Text('手机壁纸'),
-                  onTap: ()=>{
-                    Navigator.of(context).push(new MaterialPageRoute(builder: (context) => new VerticalPage(),))
+                  selected: false,
+                  onTap: (){
+                    Navigator.of(context).push(new MaterialPageRoute(builder: (context) => new VerticalPage(),));
                   },
                 ),
                 ListTile(
@@ -311,4 +319,5 @@ class MenuDrawer extends StatelessWidget {
       ),
     );
   }
+
 }

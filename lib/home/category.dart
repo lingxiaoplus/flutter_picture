@@ -35,6 +35,7 @@ class CategoryPageState extends State<CategoryPage> with AutomaticKeepAliveClien
         key: _refreshKey,
         child: ListPage(
           wallpapers,
+          mainAxisExtent: 210.0,
           have_footer: false,
           itemWidgetCreator: getItemWidget,
           scrollController: _scrollController,

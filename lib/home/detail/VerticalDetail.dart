@@ -22,9 +22,8 @@ class VerticalDetailState extends State<VerticalDetail>{
   List<VerticalModelResVertical> wallpaper = [];
   List<String> images = [];
   int skip = 0;
-  ScrollController _scrollController;
   double scrollDistance = 0.0;
-  final String _scrollDistanceIdentifier = 'scrollDistanceIndentifier'; //tag
+
 
   @override
   void initState() {
@@ -32,24 +31,13 @@ class VerticalDetailState extends State<VerticalDetail>{
     getData();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    _scrollController?.removeListener(_handleScroll);
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _scrollController = ScrollController();
-    _scrollController.addListener(_handleScroll);
-  }
 
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
         child: ListPage(
           wallpaper,
+          mainAxisExtent: 320.0,
           itemWidgetCreator: getItemWidget,
           onLoadMore: (){
             print("加载更多RefreshIndicator");
@@ -61,6 +49,37 @@ class VerticalDetailState extends State<VerticalDetail>{
   }
 
   Widget getItemWidget(BuildContext context, int position) {
+    return Container(
+      height: double.infinity,
+      child: GestureDetector(
+        child: Hero(
+          tag: GlobalProperties.HERO_TAG_LOAD_IMAGE + "$position",
+          child: Card(
+              color: Colors.white,
+              elevation: 2.0,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0)),
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              margin: EdgeInsets.all(4.0),
+              child: FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: wallpaper[position].preview +
+                    GlobalProperties.ImgRule_vertical_720,
+                width: 300,
+                height: 200,
+                fit: BoxFit.cover,
+              )),
+        ),
+        onTap: () {
+          Navigator.push(
+              context,
+              CustomRoute(ImageViewPage(
+                images: images,
+                position: position,
+              )));
+        },
+      ),
+    );
     return GestureDetector(
       child: Hero(
         tag: GlobalProperties.HERO_TAG_LOAD_IMAGE + "$position",
@@ -111,18 +130,5 @@ class VerticalDetailState extends State<VerticalDetail>{
   Future<void> _handleRefresh() {
     wallpaper.clear();
     getData();
-  }
-
-  void _handleScroll() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
-      //加载更多
-      skip+=30;
-      getData();
-    }
-    scrollDistance = _scrollController.position.pixels;
-    PageStorage.of(context).writeState(context, scrollDistance,
-        identifier: _scrollDistanceIdentifier);
-    setState(() {});
   }
 }

@@ -19,6 +19,7 @@ class SpecialPageState extends State<SpecialPage>
   @override
   bool get wantKeepAlive => true;
   final GlobalKey<RefreshIndicatorState> _refreshKey = new GlobalKey();
+  final GlobalKey<ListPageState> _listPageKey = new GlobalKey();
 
   List<SpecialModelResAlbum> wallpapers = [];
   ScrollController _scrollController;
@@ -57,13 +58,6 @@ class SpecialPageState extends State<SpecialPage>
       ],
     );
 
-    return RefreshIndicator(
-        key: _refreshKey,
-        child: ListView.builder(
-          itemBuilder: getItemWidget,
-          itemCount: wallpapers.length + 1, //加上一个尾巴
-        ),
-        onRefresh: _handleRefresh);
   }
 
   Widget getItemWidget(BuildContext context, int position) {
@@ -150,7 +144,7 @@ class SpecialPageState extends State<SpecialPage>
                 ),
                 Padding(
                   padding: EdgeInsets.only(left: 10.0),
-                  child: Text(wallpapers[position].user.name),
+                  child: Text(wallpapers[position].user.name==null?"":wallpapers[position].user.name),
                 )
               ],
             ),

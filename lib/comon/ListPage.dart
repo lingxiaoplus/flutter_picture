@@ -15,6 +15,7 @@ class ListPage extends StatefulWidget {
   ScrollController scrollController;
   bool have_footer;
   final VoidCallback onLoadMore;
+  double mainAxisExtent;
 
   ListPage(
     List this.listData, {
@@ -25,6 +26,7 @@ class ListPage extends StatefulWidget {
     HeaderWidgetBuild this.headerCreator,
     ScrollController this.scrollController,
     VoidCallback this.onLoadMore,
+    double this.mainAxisExtent = 250.0,
   }) : super(key: key);
 
   @override
@@ -90,6 +92,7 @@ class ListPageState extends State<ListPage> {
       return StaggeredTile.fit(2);
     }else{
       //return StaggeredTile.count(1, position.isEven ? 2 : 1);
+      return StaggeredTile.extent(1, widget.mainAxisExtent);
       return StaggeredTile.count(1,1);
     }
   }
@@ -172,5 +175,11 @@ class ListPageState extends State<ListPage> {
       int pos = position - _getHeaderCount();
       return _ItemWidget(context, pos);
     }
+  }
+
+  void smoothToPosition(double position,Duration duration){
+    _scrollController.animateTo(position,
+        duration: duration,
+        curve: Curves.fastOutSlowIn);
   }
 }

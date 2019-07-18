@@ -6,22 +6,26 @@ import 'GlobalProperties.dart';
 class ImageViewPage extends StatefulWidget {
   List<String> images;
   int position;
+  bool imageRule;
 
   ImageViewPage(
-      {Key key, @required List<String> this.images, int this.position = 0})
+      {Key key,
+      @required List<String> this.images,
+      int this.position = 0,
+      bool this.imageRule = true})
       : super(key: key);
 
   @override
-  _ImageViewPageState createState() => _ImageViewPageState(position: this.position);
+  _ImageViewPageState createState() =>
+      _ImageViewPageState(position: this.position);
 }
 
 class _ImageViewPageState extends State<ImageViewPage> {
-  _ImageViewPageState(
-      {int this.position = 0})
-      : super();
+  _ImageViewPageState({int this.position = 0}) : super();
   PageController _pageController;
   int position = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -32,72 +36,40 @@ class _ImageViewPageState extends State<ImageViewPage> {
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      key: _scaffoldKey,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-        title: Text('${position+1}/${widget.images.length}'),
-        actions: <Widget>[
-          IconButton(
-              icon: const Icon(Icons.message),
-              onPressed: () {
-                _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('评论')));
-              }),
-          IconButton(
-              icon: const Icon(Icons.share),
-              onPressed: () {
-                _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('分享')));
-              }),
-          IconButton(
-              icon: const Icon(Icons.file_download),
-              onPressed: () {
-                _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('下载')));
-              }),
-        ],
-      ),
-      body:PageView.builder(
-        itemBuilder: _itemViewBuild,
-        controller: _pageController,
-        itemCount: widget.images.length,
-        onPageChanged: (int position) {
-          setState(() {
-            this.position = position;
-          });
-        },
-      ),
-
-    );
-
-    return Container(
+    return Hero(
+      tag: GlobalProperties.HERO_TAG_LOAD_IMAGE + "$position",
       child: Scaffold(
-        backgroundColor: Colors.transparent,
         key: _scaffoldKey,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Colors.transparent,
-          title: Text('${position+1}/${widget.images.length}'),
+          title: Text('${position + 1}/${widget.images.length}'),
+          leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              }),
           actions: <Widget>[
             IconButton(
                 icon: const Icon(Icons.message),
                 onPressed: () {
-                  _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('评论')));
+                  _scaffoldKey.currentState
+                      .showSnackBar(SnackBar(content: Text('评论')));
                 }),
             IconButton(
                 icon: const Icon(Icons.share),
                 onPressed: () {
-                  _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('分享')));
+                  _scaffoldKey.currentState
+                      .showSnackBar(SnackBar(content: Text('分享')));
                 }),
             IconButton(
                 icon: const Icon(Icons.file_download),
                 onPressed: () {
-                  _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text('下载')));
+                  _scaffoldKey.currentState
+                      .showSnackBar(SnackBar(content: Text('下载')));
                 }),
           ],
         ),
-        body: PageView.builder(
+        body:PageView.builder(
           itemBuilder: _itemViewBuild,
           controller: _pageController,
           itemCount: widget.images.length,
@@ -109,6 +81,8 @@ class _ImageViewPageState extends State<ImageViewPage> {
         ),
       ),
     );
+
+
   }
 
   Widget _itemViewBuild(BuildContext context, int position) {
@@ -118,20 +92,14 @@ class _ImageViewPageState extends State<ImageViewPage> {
         width: 50,
         height: 50,
         fit: BoxFit.fitWidth);*/
-    return InkWell(
-      child: Hero(
-        tag: GlobalProperties.HERO_TAG_LOAD_IMAGE + "$position",
-        child: FadeInImage.memoryNetwork(
+    return GestureDetector(
+      child: FadeInImage.memoryNetwork(
         placeholder: kTransparentImage,
-        image:
-        widget.images[position] + GlobalProperties.ImgRule_720,
-        width: 300,
-        height: 200,
+        image:widget.images[position],
         fit: BoxFit.cover,
       ),
-      ),
-      onTap: (){
-
+      onTap: () {
+        Navigator.pop(context);
       },
     );
   }

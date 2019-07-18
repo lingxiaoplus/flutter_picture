@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_picture/animation/CustomRoute.dart';
 import 'package:flutter_picture/comon/ListPage.dart';
 import 'package:flutter_picture/model/gank_welfare_model_entity.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -101,27 +102,17 @@ class GankPageState extends State<GankPage> with AutomaticKeepAliveClientMixin,S
                 placeholder: kTransparentImage,
                 image:
                 wallpapers[position].url,
-                width: 300,
-                height: 200,
+
                 fit: BoxFit.cover,
               )),
           onTap: () {
-            Navigator.push(context, PageRouteBuilder(
-                pageBuilder: (BuildContext context, Animation animation, Animation secondaryAnimation) {
-              return FadeTransition(
-                opacity: animation,
-                child: ImageViewPage(
+            Navigator.push(
+                context,
+                CustomRoute(ImageViewPage(
                   images: images,
                   position: position,
-                ),
-              );
-            }));
-
-            /*Navigator.of(context).push(new MaterialPageRoute(
-                builder: (context) => new ImageViewPage(
-                      images: images,
-                      position: position,
-                    )));*/
+                  imageRule: false,
+                )));
           },
         ));
   }

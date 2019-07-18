@@ -10,6 +10,7 @@ import 'GlobalProperties.dart';
 import 'HttpUtil.dart';
 import 'home/gank.dart';
 import 'home/special.dart';
+import 'home/vertical.dart';
 
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
@@ -287,6 +288,9 @@ class MenuDrawer extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.image),
                   title: const Text('手机壁纸'),
+                  onTap: ()=>{
+                    Navigator.of(context).push(new MaterialPageRoute(builder: (context) => new VerticalPage(),))
+                  },
                 ),
                 ListTile(
                   leading: const Icon(Icons.cake),

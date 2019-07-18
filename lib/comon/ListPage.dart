@@ -14,6 +14,7 @@ class ListPage extends StatefulWidget {
 
   ScrollController scrollController;
   bool have_footer;
+  final VoidCallback onLoadMore;
 
   ListPage(
     List this.listData, {
@@ -23,6 +24,7 @@ class ListPage extends StatefulWidget {
     ItemWidgetBuild this.itemWidgetCreator,
     HeaderWidgetBuild this.headerCreator,
     ScrollController this.scrollController,
+    VoidCallback this.onLoadMore,
   }) : super(key: key);
 
   @override
@@ -32,11 +34,42 @@ class ListPage extends StatefulWidget {
 }
 
 class ListPageState extends State<ListPage> {
+  ScrollController _scrollController;
+  double scrollDistance = 0.0;
+  final String _scrollDistanceIdentifier = 'scrollDistanceIndentifier'; //tag
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController?.removeListener(_handleScroll);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _scrollController = ScrollController();
+    _scrollController.addListener(_handleScroll);
+
+  }
+
+  void _handleScroll() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      //加载更多
+      print("加载更多");
+      widget.onLoadMore();
+    }
+    scrollDistance = _scrollController.position.pixels;
+    PageStorage.of(context).writeState(context, scrollDistance,
+        identifier: _scrollDistanceIdentifier);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return StaggeredGridView.countBuilder(
-      controller: widget.scrollController,
+      controller: _scrollController,
+      shrinkWrap: true,
       itemBuilder: (BuildContext context, int position) {
         return buildItemWidget(context, position);
       },

@@ -9,6 +9,7 @@ import 'dart:math';
 import 'package:flutter_picture/model/vertical_model_entity.dart';
 
 import 'HttpUtil.dart';
+import 'animation/CustomRoute.dart';
 
 void main() {
   runApp(Splash());
@@ -69,6 +70,8 @@ class _SplashPageState extends State<SplashPage> {
 
   void goHomePage(){
     if(!is_goHome){
+      /*Navigator.of(context).pushAndRemoveUntil(
+          CustomRoute(HomePage()),(Route<dynamic> rout)=>false);*/
       Navigator.of(context).pushAndRemoveUntil(new MaterialPageRoute(builder: (context)=>new HomePage()),
               (Route<dynamic> rout)=>false);
       is_goHome = true;

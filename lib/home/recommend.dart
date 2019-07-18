@@ -4,6 +4,7 @@ import 'package:dio/dio.dart';
 import 'dart:convert';
 
 import 'package:flutter_picture/GlobalProperties.dart';
+import 'package:flutter_picture/animation/CustomRoute.dart';
 import 'package:flutter_picture/comon/BannerWidget.dart';
 import 'package:flutter_picture/comon/ListPage.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -81,11 +82,11 @@ class RecommendState extends State<Recommend>
       Picture picture = Picture();
       picture.preview = item['preview'];
       wallpapers.add(picture);
-      images.add(picture.preview);
+      images.add(picture.preview + GlobalProperties.ImgRule_1080);
     }
 
     getBannerData(map);
-    if(mounted){
+    if (mounted) {
       setState(() {
         wallpapers = wallpapers;
         bannerList = bannerList;
@@ -113,7 +114,7 @@ class RecommendState extends State<Recommend>
       if (cover == null) continue;
       print('图片： ${cover}');
       print('标题： ${title}');
-      var bannerItem = BannerItem.defaultBannerItem(cover, title,id);
+      var bannerItem = BannerItem.defaultBannerItem(cover, title, id);
       bannerList.add(bannerItem);
     }
   }
@@ -137,7 +138,7 @@ class RecommendState extends State<Recommend>
                     bannerPress: (int position, BannerItem entity) {
                       print('id is ${entity.id}');
                       Navigator.of(context).push(new MaterialPageRoute(
-                          builder: (context) => new BannerDetail(id: entity.id),
+                        builder: (context) => new BannerDetail(id: entity.id),
                       ));
                     },
                   );
@@ -160,7 +161,7 @@ class RecommendState extends State<Recommend>
               onPressed: () {
                 _scrollController.animateTo(0,
                     duration: Duration(milliseconds: 1000),
-                    curve: Curves.linearToEaseOut);
+                    curve: Curves.fastOutSlowIn);
               },
               elevation: 13.0,
               child: Icon(Icons.vertical_align_top),
@@ -181,30 +182,42 @@ class RecommendState extends State<Recommend>
       child: Hero(
         tag: GlobalProperties.HERO_TAG_LOAD_IMAGE + "$position",
         child: Card(
-          color: Colors.white,
-          elevation: 4.0,
-          margin: EdgeInsets.all(4.0),
-          child:FadeInImage.memoryNetwork(
-            placeholder: kTransparentImage,
-            image:
-            wallpapers[position].preview + GlobalProperties.imgRule_230,
-            width: 300,
-            height: 200,
-            fit: BoxFit.cover,
-          )
-        ),
+            color: Colors.white,
+            elevation: 4.0,
+            margin: EdgeInsets.all(4.0),
+            child: FadeInImage.memoryNetwork(
+              placeholder: kTransparentImage,
+              image:
+                  wallpapers[position].preview + GlobalProperties.imgRule_230,
+              fit: BoxFit.cover,
+            )),
       ),
       onTap: () {
-        Navigator.push(context, PageRouteBuilder(
+        Navigator.push(
+            context,
+            PageRouteBuilder(
+                transitionDuration: Duration(milliseconds: 700),
+                pageBuilder: (_, __, ___) => ImageViewPage(
+                  images: images,
+                  position: position,
+                )));
+
+        /*Navigator.push(
+            context,
+            CustomRoute(ImageViewPage(
+              images: images,
+              position: position,
+            )));*/
+        /*Navigator.push(context, PageRouteBuilder(
             pageBuilder: (BuildContext context, Animation animation, Animation secondaryAnimation) {
-              return FadeTransition(
-                opacity: animation,
+              return ScaleTransition(
+                scale: animation,
                 child: ImageViewPage(
                   images: images,
                   position: position,
                 ),
               );
-            }));
+            }));*/
       },
     );
   }

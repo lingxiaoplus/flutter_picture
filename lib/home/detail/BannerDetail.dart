@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
+import 'package:flutter_picture/animation/CustomRoute.dart';
 import 'package:flutter_picture/comon/ListPage.dart';
 import 'package:flutter_picture/model/banner_model_entity.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -64,6 +65,9 @@ class BannerState extends State<BannerDetail>
         });
     Map map = jsonDecode(response.toString());
     BannerModelEntity bannerModel = BannerModelEntity.fromJson(map);
+    bannerModel.res.wallpaper.forEach((f)=>{
+      images.add(f.img)
+    });
     setState(() {
       bannerWallpaper.addAll(bannerModel.res.wallpaper);
     });
@@ -102,11 +106,14 @@ class BannerState extends State<BannerDetail>
 
   Widget getItemWidget(BuildContext context, int position) {
     return GestureDetector(
-      //child: Hero(
-      //tag: GlobalProperties.HERO_TAG_LOAD_IMAGE,
+      child: Hero(
+      tag: GlobalProperties.HERO_TAG_LOAD_IMAGE + "$position",
       child: Card(
           color: Colors.white,
-          elevation: 4.0,
+          elevation: 2.0,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0)),
+          clipBehavior: Clip.antiAliasWithSaveLayer,
           margin: EdgeInsets.all(4.0),
           child: FadeInImage.memoryNetwork(
             placeholder: kTransparentImage,
@@ -116,13 +123,19 @@ class BannerState extends State<BannerDetail>
             height: 200,
             fit: BoxFit.cover,
           )),
-      //),
+      ),
       onTap: () {
-        Navigator.of(context).push(new MaterialPageRoute(
+        Navigator.push(
+            context,
+            CustomRoute(ImageViewPage(
+              images: images,
+              position: position,
+            )));
+        /*Navigator.of(context).push(new MaterialPageRoute(
             builder: (context) => new ImageViewPage(
                   images: images,
                   position: position,
-                )));
+                )));*/
       },
     );
   }

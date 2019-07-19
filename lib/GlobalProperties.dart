@@ -13,16 +13,15 @@ class GlobalProperties{
    */
   static const VERTICAL_URLS = "/v1/vertical/vertical" +
       "?limit=30?adult=false&first=1&order=hot";
+  /**
+   * 竖屏
+   */
+  static const VERTICAL_URL = "/v1/vertical/vertical";
 
   /**
    * banner
    */
   static const BANNER_URL = "/v1/wallpaper";
-
-  /**
-   * 竖屏
-   */
-  static const VERTICAL_URL = "/v1/vertical/vertical";
 
   /**
    * 专辑

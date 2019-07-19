@@ -80,7 +80,7 @@ class _HomePageState extends State<HomePage>
               icon: Icon(Icons.search,color: Colors.white,),
               onPressed: () => _globalKey.currentState
                   .showSnackBar(SnackBar(content: Text('搜索')))),
-          PopupMenuButton(
+          /*PopupMenuButton(
             padding: EdgeInsets.all(1.0),
             onSelected: (String value) {},
             itemBuilder: (BuildContext context) {
@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage>
                 )
               ];
             },
-          ),
+          ),*/
         ],
         bottom: TabBar(
           tabs: tabTitles.map((String title) => new Tab(text: title)).toList(),
@@ -190,7 +190,7 @@ class _HomePageState extends State<HomePage>
               icon: Icon(Icons.search,color: Colors.white,),
               onPressed: () => _globalKey.currentState
                   .showSnackBar(SnackBar(content: Text('搜索')))),
-          PopupMenuButton(
+          /*PopupMenuButton(
             padding: EdgeInsets.all(1.0),
             onSelected: (String value) {},
             itemBuilder: (BuildContext context) {
@@ -232,7 +232,7 @@ class _HomePageState extends State<HomePage>
                 )
               ];
             },
-          ),
+          ),*/
         ],
         bottom: TabBar(
           tabs: tabTitles.map((String title) => new Tab(text: title)).toList(),
@@ -297,7 +297,9 @@ class MenuDrawer extends StatelessWidget {
                   title: const Text('手机壁纸'),
                   selected: false,
                   onTap: (){
-                    Navigator.of(context).push(new MaterialPageRoute(builder: (context) => new VerticalPage(),));
+                    Navigator
+                        .of(context)
+                        .push(MaterialPageRoute(builder: (context) => VerticalPage(url: GlobalProperties.BASE_URL + GlobalProperties.VERTICAL_URL),));
                   },
                 ),
                 ListTile(
@@ -309,9 +311,17 @@ class MenuDrawer extends StatelessWidget {
                   title: const Text('以图搜图'),
                 ),
                 ListTile(
-                  leading: const Icon(Icons.exit_to_app),
-                  title: const Text('退出软件'),
-                )
+                  leading: const Icon(Icons.file_download),
+                  title: const Text('查看下载'),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.settings),
+                  title: const Text('设置'),
+                ),
+                ListTile(
+                  leading: const Icon(Icons.info),
+                  title: const Text('关于'),
+                ),
               ],
             )),
           ],

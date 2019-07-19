@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_picture/comon/ListPage.dart';
+import 'package:flutter_picture/home/vertical.dart';
 import 'package:flutter_picture/model/category_model_entity.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'dart:convert';
@@ -44,27 +45,38 @@ class CategoryPageState extends State<CategoryPage> with AutomaticKeepAliveClien
   }
 
   Widget getItemWidget(BuildContext context, int position) {
-    return Card(
-      color: Colors.white,
-      elevation: 4.0,
-      margin: EdgeInsets.all(4.0),
-      child: Stack(
-        alignment:Alignment.center,
-        children: <Widget>[
-          FadeInImage.memoryNetwork(
-              placeholder: kTransparentImage,
-              image: wallpapers[position].cover,
-              width: 300,
-              height: 200,
-              fit: BoxFit.cover
-          ),
-          Padding(
-            padding: EdgeInsets.all(4),
-            child: Text(
-              wallpapers[position].rname,
-              style: TextStyle(color: Colors.white,fontSize: 20.0)),),
-        ],
+    return GestureDetector(
+      child: Card(
+        color: Colors.white,
+        elevation: 4.0,
+        margin: EdgeInsets.all(4.0),
+        child: Stack(
+          alignment:Alignment.center,
+          children: <Widget>[
+            FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: wallpapers[position].cover,
+                width: 300,
+                height: 200,
+                fit: BoxFit.cover
+            ),
+            Padding(
+              padding: EdgeInsets.all(4),
+              child: Text(
+                  wallpapers[position].rname,
+                  style: TextStyle(color: Colors.white,fontSize: 20.0)),),
+          ],
+        ),
       ),
+      onTap: (){
+        Navigator
+            .of(context)
+            .push(
+            MaterialPageRoute(
+              builder: (context) =>
+                  VerticalPage(url: GlobalProperties.BASE_URL +
+                      GlobalProperties.CATEGORY_VERTICAL_URL + "/${wallpapers[position].id}/vertical"),));
+      },
     );
     return Card(
       color: Colors.white,
@@ -96,7 +108,7 @@ class CategoryPageState extends State<CategoryPage> with AutomaticKeepAliveClien
     var dio = HttpUtil.getDio();
     var response = await dio.get(
         GlobalProperties.BASE_URL +
-            GlobalProperties.CATEGORY_URL);
+            GlobalProperties.CATEGORY_VERTICAL_URL);
     Map map =  jsonDecode(response.toString());
     CategoryModelEntity category = CategoryModelEntity.fromJson(map);
     if(category.res.category.length%2 != 0 && category.res.category.length>1){

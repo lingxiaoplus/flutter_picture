@@ -1,18 +1,24 @@
+import 'dart:convert';
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker_saver/image_picker_saver.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 import 'GlobalProperties.dart';
+import 'HttpUtil.dart';
 
 class ImageViewPage extends StatefulWidget {
   List<String> images;
   int position;
   bool imageRule;
 
-  ImageViewPage(
-      {Key key,
-      @required List<String> this.images,
-      int this.position = 0,
-      bool this.imageRule = true})
+  ImageViewPage({Key key,
+    @required List<String> this.images,
+    int this.position = 0,
+    bool this.imageRule = true})
       : super(key: key);
 
   @override
@@ -20,11 +26,15 @@ class ImageViewPage extends StatefulWidget {
       _ImageViewPageState(position: this.position);
 }
 
-class _ImageViewPageState extends State<ImageViewPage> {
+class _ImageViewPageState extends State<ImageViewPage> with TickerProviderStateMixin{
   _ImageViewPageState({int this.position = 0}) : super();
   PageController _pageController;
   int position = 0;
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey();
+  bool showProgress = false;
+  double progress = 0.0;
+  AnimationController _colorAnimationController;
+  Animation<Color> _colorAnimation;
 
   @override
   void initState() {
@@ -32,6 +42,14 @@ class _ImageViewPageState extends State<ImageViewPage> {
     _pageController = PageController(
       initialPage: widget.position,
     );
+    _colorAnimationController = AnimationController(vsync: this);
+    _colorAnimation = ColorTween(
+      begin: Colors.blue,
+      end: Colors.red,
+    ).animate(
+        _colorAnimationController
+    );
+
   }
 
   @override
@@ -64,25 +82,60 @@ class _ImageViewPageState extends State<ImageViewPage> {
             IconButton(
                 icon: const Icon(Icons.file_download),
                 onPressed: () {
-                  _scaffoldKey.currentState
-                      .showSnackBar(SnackBar(content: Text('下载')));
+                  saveFile(widget.images[position]);
                 }),
           ],
         ),
-        body:PageView.builder(
-          itemBuilder: _itemViewBuild,
-          controller: _pageController,
-          itemCount: widget.images.length,
-          onPageChanged: (int position) {
-            setState(() {
-              this.position = position;
-            });
-          },
+        body: Stack(
+          children: <Widget>[
+            PageView.builder(
+              itemBuilder: _itemViewBuild,
+              controller: _pageController,
+              itemCount: widget.images.length,
+              onPageChanged: (int position) {
+                setState(() {
+                  this.position = position;
+                });
+              },
+            ),
+            Offstage(
+              offstage: !showProgress,
+              child: LinearProgressIndicator(
+                  value: progress,
+                  valueColor: _colorAnimation),
+            ),
+          ],
         ),
       ),
     );
+  }
 
-
+  Future<void> saveFile(String url) async {
+    setState(() {
+      showProgress = true;
+    });
+    var dio = HttpUtil.getDio();
+    var response = await dio.get(
+        url,
+        options: Options(
+            responseType: ResponseType.bytes
+        ),
+        onReceiveProgress: (int count, int total) {
+          setState(() {
+            progress = count.toDouble() / total.toDouble();
+            _colorAnimationController.value = progress;
+          });
+        }
+    );
+    List<int> bytes = response.data;
+    var filePath = await ImagePickerSaver.saveFile(
+        fileData: Uint8List.fromList(bytes));
+    //var saveFile = File.fromUri(Uri.parse(filePath));
+    setState(() {
+      showProgress = false;
+    });
+    _scaffoldKey.currentState
+        .showSnackBar(SnackBar(content: Text('下载成功，文件保存在${filePath}')));
   }
 
   Widget _itemViewBuild(BuildContext context, int position) {
@@ -95,7 +148,7 @@ class _ImageViewPageState extends State<ImageViewPage> {
     return GestureDetector(
       child: FadeInImage.memoryNetwork(
         placeholder: kTransparentImage,
-        image:widget.images[position],
+        image: widget.images[position],
         fit: BoxFit.cover,
       ),
       onTap: () {

@@ -8,6 +8,9 @@ import 'category.dart';
 import 'detail/VerticalDetail.dart';
 
 class VerticalPage extends StatefulWidget{
+  final String url;
+  VerticalPage({Key key,this.url}) :super(key: key);
+
   @override
   State<StatefulWidget> createState() {
     return VerticalPageState();
@@ -52,8 +55,8 @@ class VerticalPageState extends State<VerticalPage>
         body: TabBarView(
             controller: tabController,
             children: <Widget>[
-              VerticalDetail(url: GlobalProperties.BASE_URL + GlobalProperties.VERTICAL_URL + "?order=new"),
-              VerticalDetail(url: GlobalProperties.BASE_URL + GlobalProperties.VERTICAL_URL + "?order=hot"),
+              VerticalDetail(url: widget.url + "?order=new"),
+              VerticalDetail(url: widget.url + "?order=hot"),
         ]),
       ));
   }

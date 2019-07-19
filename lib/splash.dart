@@ -89,6 +89,7 @@ class _SplashPageState extends State<SplashPage> {
           ),
         ),
       child: Stack(
+        alignment: AlignmentDirectional.center,
         children: <Widget>[
           Positioned(child: MaterialButton(
             onPressed: goHomePage,
@@ -99,7 +100,12 @@ class _SplashPageState extends State<SplashPage> {
           ),
             top: 22.0,
             right: 10.0,
-          )
+          ),
+          Positioned(
+            width: 30.0,
+            height: 30.0,
+            child: CircularProgressIndicator(strokeWidth: 2.0,),
+            bottom: 20.0,)
         ],
       )
 //      child: Scaffold(

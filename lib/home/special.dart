@@ -94,12 +94,15 @@ class SpecialPageState extends State<SpecialPage>
             children: <Widget>[
               Expanded(
                 flex: 1,
-                child: FadeInImage.memoryNetwork(
-                    placeholder: kTransparentImage,
-                    image: wallpapers[position].cover,
-                    width: 100,
-                    height: 80,
-                    fit: BoxFit.cover),
+                child: Padding(
+                    padding: EdgeInsets.all(4.0),
+                    child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image: wallpapers[position].cover,
+                      width: 100,
+                      height: 80,
+                      fit: BoxFit.cover),
+                ),
               ),
               Expanded(
                   flex: 2,
@@ -135,6 +138,7 @@ class SpecialPageState extends State<SpecialPage>
             child: Row(
               children: <Widget>[
                 ClipOval(
+
                   child: FadeInImage.memoryNetwork(
                       placeholder: kTransparentImage,
                       image: wallpapers[position].user.avatar,
@@ -164,7 +168,10 @@ class SpecialPageState extends State<SpecialPage>
     var dio = HttpUtil.getDio();
     var response = await dio.get(
         GlobalProperties.BASE_URL + GlobalProperties.SPECIAL_URL,
-        queryParameters: {'limit': GlobalProperties.limit, 'skip': skip});
+        queryParameters: {
+          'limit': GlobalProperties.limit,
+          'skip': skip
+        });
     Map map = jsonDecode(response.toString());
     SpecialModelEntity special = SpecialModelEntity.fromJson(map);
     wallpapers.addAll(special.res.album);

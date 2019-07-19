@@ -166,7 +166,7 @@ class RecommendState extends State<Recommend>
         Navigator.push(
             context,
             PageRouteBuilder(
-                transitionDuration: Duration(milliseconds: 700),
+                transitionDuration: Duration(milliseconds: 600),
                 pageBuilder: (_, __, ___) => ImageViewPage(
                   images: images,
                   position: position,

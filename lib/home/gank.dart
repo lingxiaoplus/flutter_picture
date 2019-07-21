@@ -70,7 +70,6 @@ class GankPageState extends State<GankPage> with AutomaticKeepAliveClientMixin,S
 
   Widget getItemWidget(BuildContext context, int position) {
     return Card(
-        color: Colors.white,
         elevation: 4.0,
         margin: EdgeInsets.all(4.0),
         child: InkWell(

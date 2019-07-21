@@ -149,7 +149,7 @@ class _ImageViewPageState extends State<ImageViewPage> with TickerProviderStateM
       child: FadeInImage.memoryNetwork(
         placeholder: kTransparentImage,
         image: widget.images[position],
-        fit: BoxFit.cover,
+        fit: BoxFit.fitWidth,
       ),
       onTap: () {
         Navigator.pop(context);

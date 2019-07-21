@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class GlobalProperties{
   static const BASE_URL = "http://service.picasso.adesk.com";
   /**
@@ -65,5 +67,13 @@ class GlobalProperties{
   static const ImgRule_vertical_1080 ="?imageMogr2/thumbnail/!1080x1920r/gravity/Center/crop/1080x1920";
 
   static const HERO_TAG_LOAD_IMAGE = "load_image";
+
+  static const THEME_COLOR = "theme_color";
+  static const THEME_BRIGHTNESS_LIGHT = "theme_brightness_light";
+
+  static const List<MaterialColor> colors = [Colors.pink,Colors.red,Colors.purple,
+    Colors.blue,Colors.lightBlue,
+    Colors.teal,Colors.green
+    ,Colors.lightGreen,Colors.yellow,Colors.orange,Colors.brown,Colors.blueGrey];
 
 }

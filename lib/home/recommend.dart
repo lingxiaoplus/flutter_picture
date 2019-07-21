@@ -152,7 +152,7 @@ class RecommendState extends State<Recommend>
       child: Hero(
         tag: GlobalProperties.HERO_TAG_LOAD_IMAGE + "$position",
         child: Card(
-            color: Colors.white,
+
             elevation: 2.0,
             margin: EdgeInsets.all(2.0),
             child: FadeInImage.memoryNetwork(
@@ -166,7 +166,7 @@ class RecommendState extends State<Recommend>
         Navigator.push(
             context,
             PageRouteBuilder(
-                transitionDuration: Duration(milliseconds: 600),
+                transitionDuration: Duration(milliseconds: 500),
                 pageBuilder: (_, __, ___) => ImageViewPage(
                   images: images,
                   position: position,

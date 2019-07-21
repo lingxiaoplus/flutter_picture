@@ -47,7 +47,6 @@ class CategoryPageState extends State<CategoryPage> with AutomaticKeepAliveClien
   Widget getItemWidget(BuildContext context, int position) {
     return GestureDetector(
       child: Card(
-        color: Colors.white,
         elevation: 4.0,
         margin: EdgeInsets.all(4.0),
         child: Stack(

@@ -8,6 +8,8 @@ import 'package:flutter_picture/home/category.dart';
 
 import 'GlobalProperties.dart';
 import 'HttpUtil.dart';
+import 'animation/RxBus.dart';
+import 'home/drawer/settings.dart';
 import 'home/gank.dart';
 import 'home/special.dart';
 import 'home/vertical.dart';
@@ -56,6 +58,7 @@ class _HomePageState extends State<HomePage>
   void dispose() {
     super.dispose();
     tabController.dispose();
+    RxBus.instance.unRegister();
   }
 
   @override
@@ -317,6 +320,13 @@ class MenuDrawer extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.settings),
                   title: const Text('设置'),
+                  onTap: (){
+                    Navigator
+                        .of(context)
+                        .push(MaterialPageRoute(
+                            builder: (context) =>
+                              SettingPage(),));
+                  },
                 ),
                 ListTile(
                   leading: const Icon(Icons.info),

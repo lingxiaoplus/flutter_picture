@@ -40,6 +40,7 @@ class SpecialPageState extends State<SpecialPage>
             child: ListView.builder(
               itemBuilder: getItemWidget,
               itemCount: wallpapers.length + 1, //加上一个尾巴
+
             ),
             onRefresh: _handleRefresh),
         Positioned(
@@ -83,7 +84,6 @@ class SpecialPageState extends State<SpecialPage>
           ));
     }
     return Card(
-      color: Colors.white,
       elevation: 4.0,
       margin: EdgeInsets.all(4.0),
       child: Column(

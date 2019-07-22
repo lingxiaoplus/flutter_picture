@@ -10,6 +10,7 @@ import 'GlobalProperties.dart';
 import 'HttpUtil.dart';
 import 'animation/RxBus.dart';
 import 'home/drawer/about.dart';
+import 'home/drawer/local_image.dart';
 import 'home/drawer/settings.dart';
 import 'home/gank.dart';
 import 'home/special.dart';
@@ -313,6 +314,13 @@ class MenuDrawer extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.file_download),
                   title: const Text('查看下载'),
+                  onTap: (){
+                    Navigator
+                        .of(context)
+                        .push(MaterialPageRoute(
+                      builder: (context) =>
+                          LocalImagePage(),));
+                  },
                 ),
                 ListTile(
                   leading: const Icon(Icons.settings),

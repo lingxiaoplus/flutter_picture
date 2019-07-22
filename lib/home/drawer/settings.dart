@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_picture/animation/RxBus.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../GlobalProperties.dart';
@@ -45,52 +46,12 @@ class SettingPageState extends State<SettingPage>{
         child: Column(
           children: <Widget>[
             _buildPanel(),
-            Row(
-                //crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(child: ListView(
-                    shrinkWrap: true,
-                    children: <Widget>[
-                      Flex(direction: Axis.horizontal,children: <Widget>[
-                        Expanded(
-                          flex: 7,
-                          child:InkWell(
-                            child: ListTile(
-                              title: Text('夜间模式'),
-                              leading: const Icon(Icons.theaters),
-                            ),
-                            onTap: (){
-                              setState(() {
-                                openDark = !openDark;
-                              });
-                              postBrightChanged(openDark);
-                            },
-                          ),
-                        ),
-                        Expanded(
-                            flex:1,
-                            child: Switch.adaptive(
-                                value: openDark,
-                                activeColor: Colors.pink,
-                                onChanged: (bool opened){
-                                  setState(() {
-                                    openDark = opened;
-                                  });
-                                  postBrightChanged(opened);
-                                },),
-                        )
-                      ],
-                      ),
-                      Divider(
-                        height: 2.0,
-
-                        color: Colors.grey,
-                      )
-
-                    ],
-                  )),
-                ],
-              ),
+            _buildSwitch(),
+            DecoratedBox(decoration: BoxDecoration(
+              border: Border(
+                top: Divider.createBorderSide(context,color: Colors.cyan,width: 25),
+                  bottom: Divider.createBorderSide(context,color: Colors.cyan,width: 25))
+            )),
           ],
         ),
       ),
@@ -129,8 +90,8 @@ class SettingPageState extends State<SettingPage>{
             headerBuilder: (BuildContext context, bool isExpanded) {
               return InkWell(
                 child: ListTile(
-                title: Text('主题换肤'),
-                leading: const Icon(Icons.theaters),
+                title: Text('主题换肤',style: TextStyle(color: Theme.of(context).primaryColor),),
+                leading: getSvg('assets/ic_theme.svg',color: Theme.of(context).primaryColor),
               ),
                 onTap: (){
                   setState(() {
@@ -155,6 +116,7 @@ class SettingPageState extends State<SettingPage>{
                       brightness: Brightness.light,
                       primaryColor: _data[index].color,
                     );
+
                     ChangeThemeEvent event = new ChangeThemeEvent(color: _data[index].color,position: index);
                     RxBus.instance.post(event);
                   },
@@ -164,21 +126,63 @@ class SettingPageState extends State<SettingPage>{
             isExpanded: isColorExpanded,
           ),
         ],
-      /*children: _data.map<ExpansionPanel>((Item item) {
-        return ExpansionPanel(
-          headerBuilder: (BuildContext context, bool isExpanded) {
-            return ListTile(
-              title: Text(item.headerValue),
-            );
-          },
-          body: Wrap(
-            children: <Widget>[
+    );
+  }
 
+  Widget _buildSwitch(){
+    return Row(
+      //crossAxisAlignment: CrossAxisAlignment.center,
+      children: <Widget>[
+        Expanded(child: ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            Flex(direction: Axis.horizontal,children: <Widget>[
+              Expanded(
+                flex: 6,
+                child:InkWell(
+                  child: ListTile(
+                    title: Text('夜间模式'),
+                    leading: getSvg('assets/md-cloudy-night.svg'),
+                  ),
+                  onTap: (){
+                    setState(() {
+                      openDark = !openDark;
+                    });
+                    postBrightChanged(openDark);
+                  },
+                ),
+              ),
+              Expanded(
+                flex:1,
+                child: Switch.adaptive(
+                  value: openDark,
+                  activeColor: Colors.pink,
+                  onChanged: (bool opened){
+                    setState(() {
+                      openDark = opened;
+                    });
+                    postBrightChanged(opened);
+                  },),
+              )
             ],
-          ),
-          isExpanded: item.isExpanded,
-        );
-      }).toList(),*/
+            ),
+            Divider(
+              height: 2.0,
+              color: Colors.grey,
+            )
+
+          ],
+        )),
+      ],
+    );
+  }
+
+  Widget getSvg(String name,{Color color}){
+    var pic = SvgPicture.asset(name,color: color,);
+    return SizedBox(
+      width: 25,
+      height: 25,
+      child: pic,
     );
   }
 }

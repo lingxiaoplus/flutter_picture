@@ -9,6 +9,7 @@ import 'package:flutter_picture/home/category.dart';
 import 'GlobalProperties.dart';
 import 'HttpUtil.dart';
 import 'animation/RxBus.dart';
+import 'home/drawer/about.dart';
 import 'home/drawer/settings.dart';
 import 'home/gank.dart';
 import 'home/special.dart';
@@ -306,10 +307,6 @@ class MenuDrawer extends StatelessWidget {
                   },
                 ),
                 ListTile(
-                  leading: const Icon(Icons.cake),
-                  title: const Text('cosplay.la'),
-                ),
-                ListTile(
                   leading: const Icon(Icons.search),
                   title: const Text('以图搜图'),
                 ),
@@ -331,6 +328,13 @@ class MenuDrawer extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.info),
                   title: const Text('关于'),
+                    onTap: (){
+                      Navigator
+                          .of(context)
+                          .push(MaterialPageRoute(
+                        builder: (context) =>
+                            AboutPage(),));
+                    }
                 ),
               ],
             )),

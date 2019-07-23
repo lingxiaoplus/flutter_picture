@@ -74,7 +74,7 @@ class CategoryPageState extends State<CategoryPage> with AutomaticKeepAliveClien
             MaterialPageRoute(
               builder: (context) =>
                   VerticalPage(url: GlobalProperties.BASE_URL +
-                      GlobalProperties.CATEGORY_VERTICAL_URL + "/${wallpapers[position].id}/vertical"),));
+                      GlobalProperties.BANNER_URL + "/${wallpapers[position].id}/vertical"),));
       },
     );
     return Card(

@@ -28,7 +28,7 @@ class BannerState extends State<BannerDetail>
   var tabTitles = ["最新", "最热"];
   TabController tabController;
   Text appbarText;
-  String id;
+  final String id;
   int skip = 0;
   List<BannerModelResWallpaper> bannerWallpaper = [];
   List<String> images = [];
@@ -44,6 +44,7 @@ class BannerState extends State<BannerDetail>
         });
       });
     getBannerDetail();
+
   }
 
   @override
@@ -84,9 +85,9 @@ class BannerState extends State<BannerDetail>
       child: Scaffold(
         appBar: AppBar(
           title: Text('ddd'),
-          bottom: TabBar(
+          bottom: !id.isEmpty ?null: TabBar(
             tabs:
-                tabTitles.map((String title) => new Tab(text: title)).toList(),
+            tabTitles.map((String title) => new Tab(text: title)).toList(),
             isScrollable: false,
             labelPadding: EdgeInsets.all(1),
             indicatorSize: TabBarIndicatorSize.label,

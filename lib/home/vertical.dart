@@ -1,10 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-
-import '../GlobalProperties.dart';
-import '../main.dart';
-import 'category.dart';
 import 'detail/VerticalDetail.dart';
 
 class VerticalPage extends StatefulWidget{

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_picture/comon/ListPage.dart';
+import 'package:flutter_picture/home/vertical.dart';
 import 'package:flutter_picture/model/special_model_entity.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'dart:convert';
 
 import '../GlobalProperties.dart';
 import '../HttpUtil.dart';
+import 'detail/BannerDetail.dart';
 
 class SpecialPage extends StatefulWidget {
   @override
@@ -83,78 +85,92 @@ class SpecialPageState extends State<SpecialPage>
             ],
           ));
     }
-    return Card(
-      elevation: 4.0,
-      margin: EdgeInsets.all(4.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Flex(
-            direction: Axis.horizontal,
-            children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Padding(
+    return InkWell(
+      child: Card(
+        elevation: 4.0,
+        margin: EdgeInsets.all(4.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Flex(
+              direction: Axis.horizontal,
+              children: <Widget>[
+                Expanded(
+                  flex: 1,
+                  child: Padding(
                     padding: EdgeInsets.all(4.0),
                     child: FadeInImage.memoryNetwork(
-                      placeholder: kTransparentImage,
-                      image: wallpapers[position].cover,
-                      width: 100,
-                      height: 80,
-                      fit: BoxFit.cover),
+                        placeholder: kTransparentImage,
+                        image: wallpapers[position].cover,
+                        width: 100,
+                        height: 80,
+                        fit: BoxFit.cover),
+                  ),
                 ),
-              ),
-              Expanded(
-                  flex: 2,
-                  child: Column(
-                    children: <Widget>[
-                      Text(
-                        wallpapers[position].name,
-                        style: TextStyle(color: Colors.black87, fontSize: 18.0),
-                        maxLines: 1,
-                        textAlign: TextAlign.left,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: true,
-                      ),
-                      Text(
-                        wallpapers[position].desc,
-                        style: TextStyle(color: Colors.black38, fontSize: 16.0),
-                        maxLines: 3,
-                        overflow: TextOverflow.ellipsis,
-                        softWrap: true,
-                      )
-                    ],
-                  )),
-            ],
-          ),
-          Divider(
-            height: 2.0,
-            indent: 10.0,
-            endIndent: 10.0,
-            color: Colors.red,
-          ),
-          Padding(
-            padding: EdgeInsets.all(4),
-            child: Row(
-              children: <Widget>[
-                ClipOval(
-
-                  child: FadeInImage.memoryNetwork(
-                      placeholder: kTransparentImage,
-                      image: wallpapers[position].user.avatar,
-                      width: 20,
-                      height: 20,
-                      fit: BoxFit.cover),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.0),
-                  child: Text(wallpapers[position].user.name==null?"":wallpapers[position].user.name),
-                )
+                Expanded(
+                    flex: 2,
+                    child: Column(
+                      children: <Widget>[
+                        Text(
+                          wallpapers[position].name,
+                          style: TextStyle(color: Colors.black87, fontSize: 18.0),
+                          maxLines: 1,
+                          textAlign: TextAlign.left,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                        ),
+                        Text(
+                          wallpapers[position].desc,
+                          style: TextStyle(color: Colors.black38, fontSize: 16.0),
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
+                        )
+                      ],
+                    )),
               ],
             ),
-          )
-        ],
+            Divider(
+              height: 2.0,
+              indent: 10.0,
+              endIndent: 10.0,
+              color: Colors.red,
+            ),
+            Padding(
+              padding: EdgeInsets.all(4),
+              child: Row(
+                children: <Widget>[
+                  ClipOval(
+
+                    child: FadeInImage.memoryNetwork(
+                        placeholder: kTransparentImage,
+                        image: wallpapers[position].user.avatar,
+                        width: 20,
+                        height: 20,
+                        fit: BoxFit.cover),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.0),
+                    child: Text(wallpapers[position].user.name==null?"":wallpapers[position].user.name),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
+      onTap: (){
+        Navigator.of(context).push(new MaterialPageRoute(
+          builder: (context) => new BannerDetail(id: wallpapers[position].id),
+        ));
+        /*Navigator
+            .of(context)
+            .push(
+            MaterialPageRoute(
+              builder: (context) =>
+                  VerticalPage(url: GlobalProperties.BASE_URL +
+                      GlobalProperties.CATEGORY_VERTICAL_URL + "/${wallpapers[position].id}/wallpaper"),));*/
+      },
     );
   }
 

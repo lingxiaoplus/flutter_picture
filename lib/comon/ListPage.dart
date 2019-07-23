@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
+import 'EmptyPage.dart';
+
 typedef HeaderWidgetBuild = Widget Function(BuildContext context, int position);
 typedef FooterWidgetBuild = Widget Function(BuildContext context, int position);
 typedef ItemWidgetBuild = Widget Function(BuildContext context, int position);
@@ -69,6 +71,9 @@ class ListPageState extends State<ListPage> {
 
   @override
   Widget build(BuildContext context) {
+    if(widget.listData.length < 1){
+      return EmptyPage();
+    }
     return StaggeredGridView.countBuilder(
       controller: _scrollController,
       shrinkWrap: true,

@@ -53,9 +53,18 @@ class _SplashPageState extends State<SplashPage> {
   BuildContext globalContext;
   @override
   void initState() {
+    showSplash().then((bool show){
+      if(show){
+        getSplashPic();
+      }else{
+        goHomePage(globalContext);
+      }
+    }).catchError((Object error){
+      print('错误：${error}');
+      goHomePage(globalContext);
+    });
     super.initState();
     RxBus.instance.register(widget.themeEvent).listen(onGetData);
-    getSplashPic();
   }
 
   void onGetData(Object event) async{
@@ -73,6 +82,16 @@ class _SplashPageState extends State<SplashPage> {
   void dispose() {
     super.dispose();
     //RxBus.instance.unRegister();
+  }
+
+  Future<bool> showSplash() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool dalyImage = prefs.getBool(GlobalProperties.OPEN_DALY_IMAGE);
+    if(dalyImage == null){
+      dalyImage =  true;
+    }
+    print('获取到的日图   》》：$dalyImage');
+    return dalyImage;
   }
 
   Future getSplashPic() async {

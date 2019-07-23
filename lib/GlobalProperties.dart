@@ -70,6 +70,7 @@ class GlobalProperties{
 
   static const THEME_COLOR = "theme_color";
   static const THEME_BRIGHTNESS_LIGHT = "theme_brightness_light";
+  static const OPEN_DALY_IMAGE = "open_daly_image";
 
   static const List<MaterialColor> colors = [Colors.pink,Colors.red,Colors.purple,
     Colors.blue,Colors.lightBlue,

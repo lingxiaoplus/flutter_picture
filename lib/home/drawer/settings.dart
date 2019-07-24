@@ -55,27 +55,32 @@ class SettingPageState extends State<SettingPage> {
         child: Column(
           children: <Widget>[
             _buildPanel(),
-            InkWell(
-              child: _buildSwitch(
-                  ListTile(
-                title: Text('夜间模式'),
-                leading: getSvg('assets/md-cloudy-night.svg'), )
-                  ,openDark,
-                  changedLightTheme),
-              onTap: () {
-                changedLightTheme(openDark);
-              },
-            ),
-            InkWell(
-              child: _buildSwitch(
-                  ListTile(
-                    title: Text('${openDalyImage?"开启":"关闭"}首页启动图片'),
-                    leading: getSvg('assets/md-cloudy-night.svg'), )
-                  ,openDalyImage,
-                  changeDalyImage),
-              onTap: () {
-                changeDalyImage(openDalyImage);
-              },
+            ListView(
+              shrinkWrap: true,
+              children: <Widget>[
+                InkWell(
+                  child: _buildSwitch(
+                      ListTile(
+                        title: Text('夜间模式'),
+                        leading: getSvg('assets/md-cloudy-night.svg'), )
+                      ,openDark,
+                      changedLightTheme),
+                  onTap: () {
+                    changedLightTheme(openDark);
+                  },
+                ),
+                InkWell(
+                  child: _buildSwitch(
+                      ListTile(
+                        title: Text('${openDalyImage?"开启":"关闭"}首页启动图片'),
+                        leading: getSvg('assets/img_daly.svg'), )
+                      ,openDalyImage,
+                      changeDalyImage),
+                  onTap: () {
+                    changeDalyImage(openDalyImage);
+                  },
+                )
+              ],
             ),
             DecoratedBox(
                 decoration: BoxDecoration(
@@ -182,6 +187,23 @@ class SettingPageState extends State<SettingPage> {
   }
 
   Widget _buildSwitch(ListTile listTile,bool opened,ValueChanged<bool> valueChanged) {
+    return Flex(
+        direction: Axis.horizontal,
+        children: <Widget>[
+          Expanded(
+            flex: 6,
+            child: listTile,
+          ),
+          Expanded(
+            flex: 1,
+            child: Switch.adaptive(
+              value: opened,
+              activeColor: Colors.pink,
+              onChanged: valueChanged,
+            ),
+          )
+        ],
+      );
     return Row(
       //crossAxisAlignment: CrossAxisAlignment.center,
       children: <Widget>[

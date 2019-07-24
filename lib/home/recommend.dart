@@ -27,7 +27,7 @@ class RecommendState extends State<Recommend>
   List<BannerItem> bannerList = [];
   List<String> images = [];
 
-  GlobalKey<RefreshIndicatorState> _refreshKey = new GlobalKey();
+  final GlobalKey<RefreshIndicatorState> _refreshKey = new GlobalKey();
   GlobalKey<ListPageState> _listPageKey = new GlobalKey();
 
   double scrollDistance = 0.0;
@@ -35,8 +35,10 @@ class RecommendState extends State<Recommend>
   @override
   void initState() {
     super.initState();
+    //_refreshKey.currentState.show();
     getRecommendList();
   }
+
 
   Future getRecommendList() async {
     var dio = HttpUtil.getDio();

@@ -18,7 +18,10 @@ class AboutPageState extends State<AboutPage>{
           Container(
             width:double.infinity,
             color: Theme.of(context).primaryColor,),
-          Text('flutter'),
+          Image.asset("assets/last.png"),
+          Text('picture'),
+          Text('1.0.0'),
+          Text('想不出什么骚话')
         ],
       ),
     );

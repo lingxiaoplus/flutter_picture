@@ -81,10 +81,10 @@ class _HomePageState extends State<HomePage>
               _globalKey.currentState.openDrawer();
             }),
         actions: <Widget>[
-          IconButton(
+          /*IconButton(
               icon: Icon(Icons.search,color: Colors.white,),
               onPressed: () => _globalKey.currentState
-                  .showSnackBar(SnackBar(content: Text('搜索')))),
+                  .showSnackBar(SnackBar(content: Text('搜索')))),*/
           /*PopupMenuButton(
             padding: EdgeInsets.all(1.0),
             onSelected: (String value) {},
@@ -307,10 +307,10 @@ class MenuDrawer extends StatelessWidget {
                         .push(MaterialPageRoute(builder: (context) => VerticalPage(url: GlobalProperties.BASE_URL + GlobalProperties.VERTICAL_URL),));
                   },
                 ),
-                ListTile(
+                /*ListTile(
                   leading: const Icon(Icons.search),
                   title: const Text('以图搜图'),
-                ),
+                ),*/
                 ListTile(
                   leading: const Icon(Icons.file_download),
                   title: const Text('查看下载'),

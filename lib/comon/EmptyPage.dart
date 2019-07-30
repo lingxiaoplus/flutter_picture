@@ -16,10 +16,10 @@ class EmptyPageState extends State<EmptyPage> with SingleTickerProviderStateMixi
   void initState() {
     super.initState();
     controller = new AnimationController(
-        duration: const Duration(seconds: 2), vsync: this);
+        duration: const Duration(seconds: 1 * 20), vsync: this);
     //图片宽高从0变到300
     animation = CurvedAnimation(parent: controller, curve: Curves.linear);
-    animation = new Tween(begin: 0.0, end: math.pi * 2).animate(animation);
+    animation = new Tween(begin: 0.0, end: math.pi * 2 * 20).animate(animation);
     animation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         //动画执行结束时反向执行动画
@@ -56,7 +56,7 @@ class AnimatedImage extends AnimatedWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Transform.rotate(angle: animation.value,child: Icon(Icons.hourglass_empty,
-              size: 80.0,
+              size: 60.0,
             ),),
             Text('空空如也!!')
           ],

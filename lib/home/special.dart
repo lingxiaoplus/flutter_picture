@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_picture/comon/EmptyPage.dart';
 import 'package:flutter_picture/comon/ListPage.dart';
 import 'package:flutter_picture/home/vertical.dart';
 import 'package:flutter_picture/model/special_model_entity.dart';
@@ -64,6 +65,10 @@ class SpecialPageState extends State<SpecialPage>
   }
 
   Widget getItemWidget(BuildContext context, int position) {
+    if(wallpapers.length == 0){
+      return EmptyPage();
+    }
+
     if (position == wallpapers.length) {
       skip += GlobalProperties.limit;
       getData();

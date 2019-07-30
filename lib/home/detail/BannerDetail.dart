@@ -84,7 +84,7 @@ class BannerState extends State<BannerDetail>
     return Container(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('ddd'),
+          title: Text(''),
           bottom: !id.isEmpty ?null: TabBar(
             tabs:
             tabTitles.map((String title) => new Tab(text: title)).toList(),

@@ -21,13 +21,13 @@ class AboutPageState extends State<AboutPage>{
               Container(
                 width:double.infinity,
                 color: Theme.of(context).primaryColor,),
-              Padding(padding: EdgeInsets.all(10),child: Image.asset("assets/last.png",width: 100,height: 100,),),
+              Padding(padding: EdgeInsets.all(10),child: Image.asset("assets/ic_launcher.png",width: 100,height: 100,),),
               //Padding(padding: EdgeInsets.all(4),child: Text('想不出什么骚话',style: TextStyle(fontSize: 14)),),
               Padding(padding: EdgeInsets.all(4),child: Text('1.0.0'),),
               Padding(padding: EdgeInsets.all(4),child: Text('确认过眼神，是船新版本'),),
             ],
           ),
-          Positioned(child:Text('@ 2019-2020 All rights reserved.',style: TextStyle(fontSize: 14),),bottom: 100,)
+          Positioned(child:Text('@ 2019-2020 All rights reserved.',style: TextStyle(fontSize: 14),),bottom: 80,)
         ],
       ),
     );

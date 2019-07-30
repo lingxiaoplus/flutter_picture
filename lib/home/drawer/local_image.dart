@@ -45,7 +45,7 @@ class LocalImagePageState extends State<LocalImagePage>{
         child: InkWell(
           child: Hero(
               tag: GlobalProperties.HERO_TAG_LOAD_IMAGE + "$position",  //注意这个TAG！！！ 因为在listview中，所以必须再加上位置
-              child: Image.file(new File(pictures[position]))),
+              child: Image.file(new File(pictures[position]),fit: BoxFit.cover,)),
           onTap: () {
             /*Navigator.push(
                 context,

@@ -9,6 +9,7 @@ import 'package:transparent_image/transparent_image.dart';
 
 import 'GlobalProperties.dart';
 import 'HttpUtil.dart';
+import 'home/drawer/local_image.dart';
 
 class ImageViewPage extends StatefulWidget {
   List<String> images;
@@ -72,6 +73,9 @@ class _ImageViewPageState extends State<ImageViewPage> with TickerProviderStateM
                 onPressed: () {
                   _scaffoldKey.currentState
                       .showSnackBar(SnackBar(content: Text('评论')));
+                  showModalBottomSheet(context: context, builder: (BuildContext context){
+                    return LocalImagePage();
+                  });
                 }),
             IconButton(
                 icon: const Icon(Icons.share),
